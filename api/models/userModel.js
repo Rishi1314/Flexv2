@@ -14,6 +14,10 @@ const userSchema=new mongoose.Schema({
     password:{
         type:String,
         required:true,
+    },
+    profilePicture:{
+        type:String,
+        default:"https://st.depositphotos.com/2218212/2938/i/450/depositphotos_29387653-stock-photo-facebook-profile.jpg",
     }
 },{timestamps:true});
 
