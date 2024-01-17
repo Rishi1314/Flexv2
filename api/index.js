@@ -2,6 +2,8 @@ import express from "express"
 import mongoose from "mongoose";
 import dotenv from "dotenv"
 import authRoutes from "./routes/authRoute.js"
+import userRoutes from "./routes/userRoute.js"
+import cookieParser from "cookie-parser";
 dotenv.config()
 
 mongoose.connect(process.env.MONGO).then(()=>{
@@ -12,13 +14,14 @@ mongoose.connect(process.env.MONGO).then(()=>{
 
 const app=express()
 app.use(express.json())
+app.use(cookieParser())
 app.listen(3000,()=>{
     console.log("Server on 3000");
 })
 
 
 
-// app.use("/api/user",userRoutes)
+app.use("/api/user",userRoutes)
 app.use("/api/auth",authRoutes)
 
 app.use((err,req,res,next)=>{
