@@ -6,10 +6,32 @@ const userSchema=new mongoose.Schema({
         required:true,
         unique:true,
     },
+    firstName:{
+        type:String,
+    },
+    lastName:{
+        type:String,
+    },
+    description:{
+        type:String
+    },
+    tags:{
+        type:[String],
+        default:[]
+    },
+    techStack:{
+        type:[String],
+        default:[]
+    },
     email:{
         type:String,
         required:true,
         unique:true,
+    },
+    onboarding:{
+        type:Boolean,
+        required:true,
+        default:false
     },
     password:{
         type:String,

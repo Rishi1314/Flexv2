@@ -5,6 +5,8 @@ import authRoutes from "./routes/authRoute.js"
 import userRoutes from "./routes/userRoute.js"
 import cookieParser from "cookie-parser";
 import path from "path"
+import cors from "cors"
+
 dotenv.config()
 
 mongoose.connect(process.env.MONGO).then(()=>{
@@ -22,6 +24,7 @@ app.get("*",(req,res)=>{
 
 app.use(express.json())
 app.use(cookieParser())
+app.use(cors({origin:true,credentials:true}))
 app.listen(3000,()=>{
     console.log("Server on 3000");
 })

@@ -19,6 +19,38 @@ export const updateUser=async(req,res,next)=>{
                 email: req.body.email,
                 password: req.body.password,
                 profilePicture: req.body.profilePicture,
+                techStack:req.body.techStack,
+                tags:req.body.tags
+              },
+            },
+            { new: true }
+          );
+        
+        const {password,...rest}=updatedUser._doc
+        res.status(200).json(rest)
+    } catch (error) {
+        console.log(error);
+        next(error)
+    }
+}
+export const onboardUser=async(req,res,next)=>{
+    if(req.user.id!==req.params.id){
+        return next(errorHandler(401,'You can update only your account!'))
+    }
+    try {
+        
+        if(req.body.password){
+            req.body.password=bcryptjs.hashSync(req.body.password,10);
+        }
+        const updatedUser = await User.findByIdAndUpdate(
+            req.params.id,
+            {
+              $set: {
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                description: req.body.description,
+                tags:[req.body.tags],
+                onboarding:true,
               },
             },
             { new: true }

@@ -56,17 +56,24 @@ export default function Profile() {
   const handleChange=(e)=>{
     setFormData({...formData,[e.target.id]:e.target.value})
   }
+  
   const handleSubmit=async(e)=>{
     e.preventDefault();
     try {
       dispatch(updateUserStart());
-      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+      console.log((currentUser._id));
+      // const res = await fetch(`https://flexserver-3jbc.onrender.com/api/user/update/${currentUser._id}`, {
+      const res = await fetch(`http://localhost:3000/api/user/update/${currentUser._id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
+        credentials:"include"
+        // withCredentials:true
       });
+      // let res=await axios.post(`http://localhost:3000/api/user/update/${currentUser._id}`,JSON.stringify(formData),customConfig)
+
       const data = await res.json();
       if (data.success === false) {
         dispatch(updateUserFailure(data));
