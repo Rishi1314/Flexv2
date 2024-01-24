@@ -19,8 +19,6 @@ export const updateUser=async(req,res,next)=>{
                 email: req.body.email,
                 password: req.body.password,
                 profilePicture: req.body.profilePicture,
-                techStack:req.body.techStack,
-                tags:req.body.tags
               },
             },
             { new: true }
@@ -50,6 +48,7 @@ export const onboardUser=async(req,res,next)=>{
                 lastName: req.body.lastName,
                 description: req.body.description,
                 tags:[req.body.tags],
+                techStack:req.body.techStack,
                 onboarding:true,
               },
             },
