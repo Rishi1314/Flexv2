@@ -26,8 +26,8 @@ export default function Signup() {
         setLoading(true)
         setError(false);
         dispatch(signInStart());
-        let res=await axios.post("http://localhost:3000/api/auth/signup",JSON.stringify(formData),customConfig)
-        let res2=await axios.post("http://localhost:3000/api/auth/signin",JSON.stringify(formData),customConfig)
+        let res=await axios.post("https://flexfordev.onrender.com/api/auth/signup",JSON.stringify(formData),customConfig)
+        let res2=await axios.post("https://flexfordev.onrender.com/api/auth/signin",JSON.stringify(formData),customConfig)
         // const res= await fetch('/api/auth/signup',{
         //   method:'POST',
         //   headers:{

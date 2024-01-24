@@ -42,8 +42,8 @@ export default function Onboarding() {
       console.log("--------");
       console.log(formData);
       dispatch(updateUserStart());
-      const res = await fetch(`http://localhost:3000/api/user/onboard/${currentUser._id}`, {
-      // const res = await fetch(`https://flexserver-3jbc.onrender.com/api/user/onboard/${currentUser._id}`, {
+      // const res = await fetch(`http://localhost:3000/api/user/onboard/${currentUser._id}`, {
+      const res = await fetch(`https://flexfordev.onrender.com/api/user/onboard/${currentUser._id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
