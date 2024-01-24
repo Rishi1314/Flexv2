@@ -19,8 +19,8 @@ export default function OAuth() {
             const provider=new GoogleAuthProvider();
             const auth=getAuth(app)
             const result=await signInWithPopup(auth,provider)
-            // let res=await axios.post("https://flexserver-3jbc.onrender.com/api/auth/google",
-            let res=await axios.post("http://localhost:3000/api/auth/google",
+            let res=await axios.post("https://flexfordev.onrender.com/api/auth/google",
+            // let res=await axios.post("http://localhost:3000/api/auth/google",
             JSON.stringify({
                 name:result.user.displayName,
                     email:result.user.email,
