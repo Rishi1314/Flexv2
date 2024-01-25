@@ -17,12 +17,13 @@ export default function App() {
       <Route element={<PrivateRouteOnboarding/>}>
       <Route path="/" element={<Home/>}/>
       </Route>
+      <Route path="/onboarding" element={<Onboarding/>}/>
     <Route path="/profile" element={<Profile/>}/>
     </Route>
       <Route path="/about" element={<About/>}/>
       <Route path="/sign-in" element={<Signin/>}/>
       <Route path="/sign-up" element={<Signup/>}/>
-      <Route path="/onboarding" element={<Onboarding/>}/>
+      
     </Routes>
     </BrowserRouter>
   )

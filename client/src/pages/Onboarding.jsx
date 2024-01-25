@@ -1,15 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react'
+import  { useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { updateUserFailure, updateUserStart, updateUserSuccess } from '../redux/user/userSlice';
-import axios from "axios"
 
 export default function Onboarding() {
-  const { currentUser, loading, error } = useSelector((state) => state.user);
+  const { currentUser, loading} = useSelector((state) => state.user);
   const [formData, setFormData] = useState({"techStack":[]});
-  const [techStack, setTechStack] = useState([]);
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [tag, settag] = useState("Tags")
+  const [verror, setVerror] = useState("")
   const tagRef = useRef()
   const descRef = useRef()
   const techs=["ReactJS","ExpressJS","Nodejs","MongoDB","Python","Javascript","TailwindCSS"]
@@ -18,12 +17,7 @@ export default function Onboarding() {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
-  const customConfig = {
-    headers: {
-    'Content-Type': 'application/json'
-    },
-    withCredentials: true, credentials: 'include'
-};
+  
 
   const techStackAdder=(e)=>{
     if(!(formData.techStack).includes(e.target.value)){
@@ -39,11 +33,18 @@ export default function Onboarding() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log("--------");
-      console.log(formData);
+      if(Object.keys(formData).length<5){
+        if((formData.techStack).length===0){
+          setVerror(`${6-Object.keys(formData).length} Field(s) Missing`)
+        }else{
+          setVerror(`${5-Object.keys(formData).length} Field(s) Missing`)
+        }
+        return
+      }
       dispatch(updateUserStart());
-      // const res = await fetch(`http://localhost:3000/api/user/onboard/${currentUser._id}`, {
-      const res = await fetch(`https://flexfordev.onrender.com/api/user/onboard/${currentUser._id}`, {
+      
+      const res = await fetch(`http://localhost:3000/api/user/onboard/${currentUser._id}`, {
+      // const res = await fetch(`https://flexfordev.onrender.com/api/user/onboard/${currentUser._id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -65,20 +66,21 @@ export default function Onboarding() {
     }
   }
   return (
-    <div className='w-[100%] flex justify-center items-center'>
-      <form onSubmit={handleSubmit} className='p-6 border border-black border-dashed items-center flex w-[50%] flex-col gap-4'>
-        <div className='flex justify-between items-center w-[60%]'>
+    <div className='bg-[#86B6F6] min-h-[90vh] w-[100%] flex justify-center items-center'>
+      <form onSubmit={handleSubmit} className='rounded-xl bg-white shadow-lg ring-1 ring-black/5 h-[80%] p-6 border border-black border-dashed items-center flex w-[50%] max-[767px]:w-[90%] flex-col gap-4'>
+        <div className={`${(verror)?"text-white bg-red-500 p-2 rounded-md":" bg-none"}`}>{verror}</div>
+        <div className='max-[767px]:flex-col flex justify-between items-center w-[60%]'>
           <span>First Name</span>
           <input
             type='text'
             placeholder='Enter your First Name'
             id='firstName'
-            className='w-[70%] border border-black border-dashed bg-white placeholder:text-black p-2 rounded-lg'
+            className='max-[767px]:w-[100%] w-[80%] border border-black border-dashed bg-white placeholder:text-black p-2 rounded-lg'
             onChange={handleChange}
           />
         </div>
 
-        <div className='flex justify-between items-center w-[60%]'>
+        <div className='max-[767px]:flex-col flex justify-between items-center w-[60%]'>
           <span>
             Last Name
           </span>
@@ -86,15 +88,15 @@ export default function Onboarding() {
             type='text'
             placeholder='Enter your Last Name'
             id='lastName'
-            className='w-[70%] border border-black border-dashed bg-white placeholder:text-black p-2 rounded-lg'
+            className='max-[767px]:w-[100%] w-[80%] border border-black border-dashed bg-white placeholder:text-black p-2 rounded-lg'
             onChange={handleChange}
           />
         </div>
-        <div className=' flex justify-between items-center w-[60%]'>
+        <div className='max-[767px]:flex-col flex justify-between items-center w-[60%]'>
           <span>
             Select your Flex-Tag
           </span>
-          <select onChange={handleChange} id="tags" ref={tagRef} className='border border-black border-dashed bg-white placeholder:text-black p-2 rounded-lg'>
+          <select onChange={handleChange} id="tags" ref={tagRef} className='w-[60%] border border-black border-dashed bg-white placeholder:text-black p-2 rounded-lg'>
             <option value="" disabled selected hidden>{tag}</option>
             <option value="AI Aficionado
 " onClick={() => { settag("AI Aficionado") }}>AI Aficionado</option>
@@ -106,17 +108,17 @@ export default function Onboarding() {
             <option value="Competitive Coder" onClick={() => { settag("Competitive Coder") }}>Competitive Coder</option>
           </select>
         </div>
-        <div className='flex justify-between items-center w-[60%]'>
+        <div className='max-[767px]:flex-col flex justify-between items-center w-[60%]'>
           <span>
-            Bio
+            Enter your Bio
           </span>
-          <textarea id="description" onChange={handleChange} ref={descRef} type='text' className='w-[70%] resize-none aspect-video text-wrap border border-black border-dashed bg-white placeholder:text-black p-2 rounded-lg' maxLength={100} placeholder='Describe yourself in 100 characters.' />
+          <textarea id="description" onChange={handleChange} ref={descRef} type='text' className='max-[767px]:w-[100%] w-[70%] resize-none aspect-video text-wrap border border-black border-dashed bg-white placeholder:text-black p-2 rounded-lg' maxLength={100} placeholder='Describe yourself in 100 characters.' />
         </div>
-        <div className='flex justify-between items-center w-[60%]'>
+        <div className='max-[767px]:w-[100%] max-[767px]:flex-col flex justify-between items-center w-[60%]'>
           <span>
             Choose Tech Stack
           </span>
-          <div className='w-[50%] flex flex-wrap gap-1'>
+          <div className='w-[60%] justify-center items-center flex flex-wrap gap-1'>
             {techs.map((tech)=>{
               return(
 <button key={tech} value={tech} onClick={(e)=>{techStackAdder(e)}} type='button' className={`rounded-md border px-2 border-dashed border-black`}>
