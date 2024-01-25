@@ -18,7 +18,7 @@ const Dashboard = (props) => {
         <Link to={"/profile"}>
           <img src={currentUser.profilePicture} alt="Profile" className={`${(first === "large") ? "" : " hidden"} duration-200 border-black border w-20 aspect-square object-cover rounded-full`} />
         </Link>
-        <p className={`${(first==="large")?"":"hidden"} w-[90%]  text-white text-[100%]`}>
+        <p className={`${(first==="large")?"":"hidden"} w-[90%] text-center text-white text-[100%]`}>
           {`@${currentUser.username}`}
         </p>
         <div className={`${(first === "large") ? "" : " hidden "} w-[80%] bg-slate-50 h-[1px] my-1 duration-300`} ></div>
