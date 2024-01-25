@@ -6,7 +6,7 @@ const Header = () => {
 
     return (
         <div className={`${currentUser ? "" : "hidden"}`}>
-            <div className='w-[100%] flex justify-between items-center p-2'>
+            <div className='w-[100%] flex justify-between items-center text-white bg-slate-900 px-2'>
                 <Link to={"/"}>
                     <h1 className='font-bold'>Flex</h1>
 
@@ -20,7 +20,7 @@ const Header = () => {
                     </Link> */}
                     <Link to={"/profile"}>
                         {currentUser ? (
-                            <div className=" hover:opacity-80 text-white border border-black flex gap-2 justify-center items-center bg-blue-300 px-3 py-2  rounded-3xl ">
+                            <div className=" hover:opacity-80 text-white border border-black flex gap-2 justify-center items-center bg-blue-300 px-3 py-1 m-1  rounded-3xl ">
                                 <span>
                                     Profile
                                 </span>

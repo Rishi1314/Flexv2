@@ -13,6 +13,7 @@ import {
   
   signOut,
 } from '../redux/user/userSlice';
+import axios from "axios"
 
 export default function Profile() {
   const fileRef=useRef(null)
@@ -62,8 +63,8 @@ export default function Profile() {
     try {
       dispatch(updateUserStart());
       console.log((currentUser._id));
-      // const res = await fetch(`https://flexfordev.onrender.com/api/user/update/${currentUser._id}`, {
-      const res = await fetch(`http://localhost:3000/api/user/update/${currentUser._id}`, {
+      const res = await fetch(`https://flexfordev.onrender.com/api/user/update/${currentUser._id}`, {
+      // const res = await fetch(`http://localhost:3000/api/user/update/${currentUser._id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -104,7 +105,8 @@ export default function Profile() {
   }
   const handleSignOut = async () => {
     try {
-      await fetch('/api/auth/signout');
+      // await axios.get('http://localhost:3000/api/auth/signout');
+      await fetch('https://flexfordev.onrender.com/api/auth/signout');
       dispatch(signOut())
     } catch (error) {
       console.log(error);

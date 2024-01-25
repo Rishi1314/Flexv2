@@ -5,26 +5,43 @@ import Profile from "./pages/Profile"
 import Signup from "./pages/signUp"
 import Header from "./components/Header"
 import Signin from "./pages/signIn"
+import Dashboard from './pages/Dashboard';
+import React, { useState } from 'react';
+
 
 import {PrivateRoute, PrivateRouteOnboarding} from "./components/PrivateRoute"
 import Onboarding from "./pages/Onboarding"
 export default function App() {
+  const [currentpage, setCurrentpage] = useState("Home")
+  const pull_data = (data) => {
+    setCurrentpage(data)// LOGS DATA FROM CHILD (My name is Dean Winchester... &)
+    console.log(data);
+  }
   return (
     <BrowserRouter>
+    <div className="h-screen overflow-hidden">
     <Header/>
+    <div className="flex">
+    <Dashboard func={pull_data}/>
     <Routes>
     <Route element={<PrivateRoute/>}>
+      
       <Route element={<PrivateRouteOnboarding/>}>
+      
       <Route path="/" element={<Home/>}/>
       </Route>
       <Route path="/onboarding" element={<Onboarding/>}/>
-    <Route path="/profile" element={<Profile/>}/>
+      <Route path="/profile" element={<Profile/>}/>
     </Route>
       <Route path="/about" element={<About/>}/>
       <Route path="/sign-in" element={<Signin/>}/>
       <Route path="/sign-up" element={<Signup/>}/>
       
     </Routes>
+    </div>
+    
+    </div>
+    
     </BrowserRouter>
   )
 }
