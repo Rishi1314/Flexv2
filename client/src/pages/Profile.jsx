@@ -1,173 +1,43 @@
-import { useEffect, useRef, useState } from 'react';
+import React from 'react'
 import { useSelector } from 'react-redux';
-import {getDownloadURL, getStorage, ref, uploadBytesResumable} from "firebase/storage"
-import {app} from "../firebase"
-import { useDispatch } from 'react-redux';
-import {
-  updateUserStart,
-  updateUserSuccess,
-  updateUserFailure,
-  deleteUserStart,
-  deleteUserFailure,
-  deleteUserSuccess,
-  
-  signOut,
-} from '../redux/user/userSlice';
-import axios from "axios"
+import { Link } from 'react-router-dom';
 
-export default function Profile() {
-  const fileRef=useRef(null)
-  const dispatch=useDispatch()
-  const [image,setImage]=useState(undefined)
-  const [formData,setFormData]=useState({})
-  const [updateSuccess, setUpdateSuccess] = useState(false);
+function Profile() {
+    const { currentUser, loading, error } = useSelector((state) => state.user);
+    console.log(currentUser);
 
-  const [imageError,setImageError]=useState(false)
-  const [imagePercentage,setImagePercentage]=useState(0)
-  const { currentUser,loading,error } = useSelector((state) => state.user);
-  useEffect(() => {
-    if(image){
-      handleFileUpload(image);
-    }
-  }, [image])
-  
-  const handleFileUpload=async()=>{
-    const storage=getStorage(app);
-    const fileName=new Date().getTime()+image.name;
-    const storageRef=ref(storage,fileName)
-    const uploadTask=uploadBytesResumable(storageRef,image);
-    uploadTask.on(
-      'state_changed',
-      (snapshot)=>{
-        const progress=(snapshot.bytesTransferred/snapshot.totalBytes)*100;
-        setImagePercentage(Math.round(progress))
-      },
-    
-    (error)=>{
-      setImageError(true)
-    },
-    ()=>{
-      getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl)=>{
-        setFormData({...formData,profilePicture:downloadUrl})
-      })
-    }
-    );
+    return (
+        <div className='min-h-screen max-[767px]:absolute bg-slate-500 w-[100%] flex flex-col items-center p-2 gap-6'>
+            <div className='max-[767px]:justify-between max-[767px]:w-[100%] flex items-center justify-between w-[50%]'>
+                <div className='flex gap-2 items-center'>
+                    <img src={currentUser.profilePicture} className='w-[8rem] rounded-full aspect-square object-cover' alt="" />
+                    <div className='flex flex-col'>
+                        <span className='max-[767px]:text-[150%] text-3xl underline'>{currentUser.username}</span>
+                        <span className='max-[767px]:text-[100%] text-xl'>{currentUser.firstName}</span>
+                        <span className='text-xl max-[767px]:text-[100%] '>{currentUser.lastName}</span>
 
-  }
-  const handleChange=(e)=>{
-    setFormData({...formData,[e.target.id]:e.target.value})
-  }
-  
-  const handleSubmit=async(e)=>{
-    e.preventDefault();
-    try {
-      dispatch(updateUserStart());
-      console.log((currentUser._id));
-      const res = await fetch(`https://flexfordev.onrender.com/api/user/update/${currentUser._id}`, {
-      // const res = await fetch(`http://localhost:3000/api/user/update/${currentUser._id}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-        credentials:"include"
-        // withCredentials:true
-      });
-      // let res=await axios.post(`http://localhost:3000/api/user/update/${currentUser._id}`,JSON.stringify(formData),customConfig)
-
-      const data = await res.json();
-      if (data.success === false) {
-        dispatch(updateUserFailure(data));
-        return;
-      }
-      dispatch(updateUserSuccess(data));
-      setUpdateSuccess(true);
-    } catch (error) {
-      dispatch(updateUserFailure(error));
-    }
-  }
-
-  const handleDeleteAccout=async()=>{
-    try {
-      dispatch(deleteUserStart());
-      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
-        method: 'DELETE',
-      });
-      const data = await res.json();
-      if (data.success === false) {
-        dispatch(deleteUserFailure(data));
-        return;
-      }
-      dispatch(deleteUserSuccess(data));
-    } catch (error) {
-      dispatch(deleteUserFailure(error));
-    }
-  }
-  const handleSignOut = async () => {
-    try {
-      // await axios.get('http://localhost:3000/api/auth/signout');
-      await fetch('https://flexfordev.onrender.com/api/auth/signout');
-      dispatch(signOut())
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  return (
-    <div className='p-3 max-w-lg mx-auto'>
-      <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
-      <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-    <input type='file' ref={fileRef} hidden accept='image/*' onChange={(e)=>setImage(e.target.files[0])}/>
-        <img
-          src={formData.profilePicture||currentUser.profilePicture}
-          alt='profile'
-          className='h-24 w-24 self-center cursor-pointer rounded-full object-cover mt-2'
-          onClick={()=>fileRef.current.click()}
-        />
-        <p className='text-sm self-center'>
-          {imageError ? (
-            <span className='text-red-700'>Error uploading image (file size must be less than 2 MB)</span>
-          ) : imagePercentage > 0 && imagePercentage < 100 ? (
-            <span className='text-slate-700'>{`Uploading: ${imagePercentage} %`}</span>
-          ) : imagePercentage === 100 ? (
-            <span className='text-green-700'>Image uploaded successfully</span>
-          ) : (
-            ''
-          )}
-        </p>
-        <input
-          defaultValue={currentUser.username}
-          type='text'
-          id='username'
-          placeholder='Username'
-          className='bg-slate-100 rounded-lg p-3'
-          onChange={handleChange}
-        />
-        <input
-          defaultValue={currentUser.email}
-          type='email'
-          id='email'
-          placeholder='Email'
-          className='bg-slate-100 rounded-lg p-3'
-          onChange={handleChange}
-        />
-        <input
-          type='password'
-          id='password'
-          placeholder='Password'
-          className='bg-slate-100 rounded-lg p-3'
-          onChange={handleChange}
-        />
-        <button className='bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80' >{loading?"Loading..":"Update"}</button>
-      </form>
-      <div className="flex justify-between mt-5">
-        <span className='text-red-700 cursor-pointer' onClick={handleDeleteAccout}>Delete Account</span>
-        <span className='text-red-700 cursor-pointer' onClick={handleSignOut}>Sign out</span>
-      </div>
-      <p className='text-red-700 mt-5'>{error && 'Something went wrong!'}</p>
-      <p className='text-green-700 mt-5'>
-        {updateSuccess && 'User is updated successfully!'}
-      </p>
-    </div>
-  );
+                    </div>
+                </div>
+                <Link to={"/editprofile"}>           
+                 <button className='max-[767px]:text-[80%]  
+                  hover:bg-zinc-500 bg-zinc-600 text-white py-1 px-2 rounded-xl'>
+                    Edit Profile</button>
+                </Link>
+            </div>
+            <div className='max-[767px]:flex-col max-[767px]:w-[100%] flex justify-between w-[50%] gap-2'>
+                <div className='max-[767px]:w-[100%] max-[767px]:min-h-fit bg-white/50 w-[50%] min-[768px]:aspect-video p-2 rounded-md'>
+                    {`" ${currentUser.description}. "`}
+                </div>
+                <div className='max-[767px]:w-[100%] w-[50%] flex flex-wrap gap-2'>
+                {(currentUser.tags).map((tag)=>{
+                    let tagCol=tag.split(" ").join("")
+                    console.log(tagCol);
+                    return <span className={` bg-${tagCol} w-fit h-fit p-2 rounded-2xl text-white`} key={tag}>{tag}</span>
+                })}
+                </div>
+            </div>
+        </div>
+    )
 }
+
+export default Profile

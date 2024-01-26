@@ -1,7 +1,7 @@
 import { BrowserRouter,Routes,Route } from "react-router-dom"
 import Home from "./pages/Home"
 import About from "./pages/About"
-import Profile from "./pages/Profile"
+import EditProfile from "./pages/EditProfile"
 import Signup from "./pages/signUp"
 import Header from "./components/Header"
 import Signin from "./pages/signIn"
@@ -11,6 +11,7 @@ import React, { useState } from 'react';
 
 import {PrivateRoute, PrivateRouteOnboarding} from "./components/PrivateRoute"
 import Onboarding from "./pages/Onboarding"
+import Profile from "./pages/Profile"
 export default function App() {
   const [currentpage, setCurrentpage] = useState("Home")
   const pull_data = (data) => {
@@ -21,7 +22,7 @@ export default function App() {
     <BrowserRouter>
     <div className="h-screen overflow-hidden">
     <Header/>
-    <div className="flex">
+    <div className="max-[767px]:relative min-[768px]:flex">
     <Dashboard func={pull_data}/>
     <Routes>
     <Route element={<PrivateRoute/>}>
@@ -29,9 +30,10 @@ export default function App() {
       <Route element={<PrivateRouteOnboarding/>}>
       
       <Route path="/" element={<Home/>}/>
+      <Route path="/profile" element={<Profile/>}/>
       </Route>
       <Route path="/onboarding" element={<Onboarding/>}/>
-      <Route path="/profile" element={<Profile/>}/>
+      <Route path="/editprofile" element={<EditProfile/>}/>
     </Route>
       <Route path="/about" element={<About/>}/>
       <Route path="/sign-in" element={<Signin/>}/>

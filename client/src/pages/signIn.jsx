@@ -28,8 +28,8 @@ export default function SignIn() {
     e.preventDefault();
     try {
       dispatch(signInStart());
-      // let res=await axios.post("http://localhost:3000/api/auth/signin",JSON.stringify(formData),customConfig)
-      let res=await axios.post("https://flexfordev.onrender.com/api/auth/signin",JSON.stringify(formData),customConfig)
+      let res=await axios.post("http://localhost:3000/api/auth/signin",JSON.stringify(formData),customConfig)
+      // let res=await axios.post("https://flexfordev.onrender.com/api/auth/signin",JSON.stringify(formData),customConfig)
       // let data = await fetch('http://localhost:3000/api/auth/signin', {
       //   method: 'POST',
       //   headers: {
@@ -38,12 +38,12 @@ export default function SignIn() {
       //   body: JSON.stringify(formData),
       // });
       const data =await res.data
-      console.log(res);
+      // console.log(res);
       if (data.success === false) { 
         dispatch(signInFailure(data.message));
         return;
       }
-      console.log(data);
+      // console.log(data);
       dispatch(signInSuccess(data));
       navigate('/');
     } catch (error) {
