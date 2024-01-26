@@ -63,8 +63,8 @@ export default function EditProfile() {
     try {
       dispatch(updateUserStart());
       console.log((currentUser._id));
-      // const res = await fetch(`https://flexfordev.onrender.com/api/user/update/${currentUser._id}`, {
-      const res = await fetch(`http://localhost:3000/api/user/update/${currentUser._id}`, {
+      const res = await fetch(`https://flexfordev.onrender.com/api/user/update/${currentUser._id}`, {
+      // const res = await fetch(`http://localhost:3000/api/user/update/${currentUser._id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
