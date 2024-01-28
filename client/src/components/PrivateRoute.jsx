@@ -9,3 +9,7 @@ export function PrivateRouteOnboarding() {
     const {currentUser} = useSelector(state => state.user)
   return currentUser.onboarding ? <Outlet/> : <Navigate to='/onboarding'/>
 }
+export function PrivateRouteSign() {
+    const {currentUser} = useSelector(state => state.user)
+  return currentUser ? <Navigate to='/'/>:<Outlet/> 
+}

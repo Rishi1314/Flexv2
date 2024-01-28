@@ -5,8 +5,8 @@ const Header = () => {
     const { currentUser } = useSelector((state) => state.user)
 
     return (
-        <div className={`${currentUser ? "" : "hidden"}`}>
-            <div className='w-[100%] flex justify-between items-center text-white bg-slate-900 px-2'>
+        <div className={`${currentUser ? "" : "hidden"} w-[100%] sticky top-0`}>
+            <div className='w-[100%] h-[7vh] flex justify-between items-center text-white bg-slate-900 px-2'>
                 <Link to={"/"}>
                     <h1 className='font-bold'>Flex</h1>
 

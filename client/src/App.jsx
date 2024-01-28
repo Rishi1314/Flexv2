@@ -9,7 +9,7 @@ import Dashboard from './pages/Dashboard';
 import React, { useState } from 'react';
 
 
-import {PrivateRoute, PrivateRouteOnboarding} from "./components/PrivateRoute"
+import {PrivateRoute, PrivateRouteOnboarding, PrivateRouteSign} from "./components/PrivateRoute"
 import Onboarding from "./pages/Onboarding"
 import Profile from "./pages/Profile"
 export default function App() {
@@ -20,9 +20,9 @@ export default function App() {
   }
   return (
     <BrowserRouter>
-    <div className="h-screen overflow-hidden">
+    <div className="flex flex-col h-screen overflow-hidden">
     <Header/>
-    <div className="max-[767px]:relative min-[768px]:flex">
+    <div className=" max-[767px]:relative min-[768px]:flex overflow-hidden">
     <Dashboard func={pull_data}/>
     <Routes>
     <Route element={<PrivateRoute/>}>
@@ -36,8 +36,11 @@ export default function App() {
       <Route path="/editprofile" element={<EditProfile/>}/>
     </Route>
       <Route path="/about" element={<About/>}/>
+      <Route element={<PrivateRouteSign/>}>
       <Route path="/sign-in" element={<Signin/>}/>
       <Route path="/sign-up" element={<Signup/>}/>
+      </Route>
+      
       
     </Routes>
     </div>

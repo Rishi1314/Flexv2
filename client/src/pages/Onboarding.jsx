@@ -11,7 +11,7 @@ export default function Onboarding() {
   const [verror, setVerror] = useState("")
   const tagRef = useRef()
   const descRef = useRef()
-  const techs=["ReactJS","ExpressJS","Nodejs","MongoDB","Python","Javascript","TailwindCSS"]
+  const techs=["ReactJS","ExpressJS","NodeJS","MongoDB","Python","Javascript","TailwindCSS"]
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleChange = (e) => {
