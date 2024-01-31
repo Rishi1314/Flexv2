@@ -3,6 +3,8 @@ footer, header, hgroup, menu, nav, section {
     display: block;
 }
 
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
