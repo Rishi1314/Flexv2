@@ -1,6 +1,7 @@
 import {errorHandler} from "../utils/erros.js"
 import bcryptjs from "bcryptjs"
 import User from "../models/userModel.js"
+import Project from "../models/projectModel.js"
 export const updateUser=async(req,res,next)=>{
     
     if(req.user.id!==req.params.id){
@@ -80,4 +81,30 @@ export const test = (req, res) => {
       next(error);
     }
   
+}
+  
+export const addProject = async (req,res,next) => {
+  // if (req.user.id !== req.params.id) {
+  //   return next(errorHandler(401, 'You can only projects to your account!'));
+  // }
+  try {
+    const { projectName, techStack, description, githubLink,deployLink, projectPicture,email } = req.body
+    const date = new Date()
+    const project = new Project({ projectName, techStack, description, githubLink, deployLink,email, projectPicture, date: date.toISOString().split("T")[0] })
+    await project.save();
+    await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        $push: {
+          projects:project
+        },
+      },
+      { new: true }
+    );
+
+        res.status(201).json({message:"Project created successfully"})
+
+  } catch (error) {
+    next(error);
   }
+}

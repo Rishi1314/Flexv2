@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import OAuth from '../components/OAuth';
 import axios from "axios"
 
+
 export default function SignIn() {
   const [formData, setFormData] = useState({});
   const { loading, error } = useSelector((state) => state.user);
@@ -51,7 +52,7 @@ export default function SignIn() {
     }
   };
   return (
-    <div loading="lazy" className="bg-[url('./assets/sign.jpg')] bg-center bg-cover bg-no-repeat flex justify-center items-center min-h-screen w-[100%]">
+    <div loading="lazy" className="flex justify-center items-center min-h-screen w-[100%]">
       <div className='p-3 rounded-xl bg-white shadow-lg ring-1 ring-black/5 w-[35%] max-[767px]:w-[100%]'>
         <h1 className='text-3xl text-center font-semibold my-7'>Log In</h1>
         <form onSubmit={handleSubmit} className='flex flex-col gap-4'>

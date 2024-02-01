@@ -26,7 +26,7 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(cors({origin:true,credentials:true}))
 app.listen(3000,()=>{
-    console.log("Server on 3000");
+    console.log("Server on 3000")
 })
 
 
