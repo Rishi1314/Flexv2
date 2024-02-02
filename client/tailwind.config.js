@@ -9,6 +9,13 @@ export default {
       animation: {
         border: 'border 4s ease infinite',
       },
+      fontFamily: {
+
+        homemadeApple: ['Homemade Apple', 'cursive'],
+        mukta: ['Mukta', 'sans-serif'],
+        lexend: ['Lexend', 'sans-serif'],
+        seewead: ['Seaweed Script', 'cursive'],
+      },
       keyframes: {
         border: {
           '0%, 100%': { backgroundPosition: '0% 50%' },

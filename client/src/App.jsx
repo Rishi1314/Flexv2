@@ -19,6 +19,8 @@ export default function App() {
     setCurrentpage(data)// LOGS DATA FROM CHILD (My name is Dean Winchester... &)
     console.log(data);
   }
+  let x = document.cookie
+  console.log(x);
   return (
     <BrowserRouter>
     <div className="flex flex-col h-screen overflow-hidden">

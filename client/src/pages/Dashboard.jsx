@@ -19,7 +19,7 @@ const Dashboard = (props) => {
         className={` flex items-center justify-center ${(first === "small") ? "m-2  " : " min-[768px]:absolute min-[768px]:-right-5 "} duration-300  border border-black   aspect-square bg-white rounded-lg`}>
           <FaCaretLeft className={` ${(first === "small") ? "" : " rotate-180 "} duration-200 text-[200%] `} />
         </button>
-        <Link to={"/profile"}>
+        <Link to={"/profile"} onClick={()=>{setfirst("small")}}>
           <img src={currentUser.profilePicture} alt="Profile" className={`${(first === "small") ? " hidden" : ""} duration-200 border-black border w-20 aspect-square object-cover rounded-full`} />
         </Link>
         <p className={`${(first === "small") ? "hidden" : ""} w-[90%] text-center text-white text-[100%]`}>
@@ -27,23 +27,23 @@ const Dashboard = (props) => {
         </p>
         <div className={`${(first === "small") ? " hidden " : ""} w-[80%] bg-slate-50 h-[1px] my-1 duration-300`} ></div>
         <div className={`${(first === "small") ? " max-[767px]:hidden " : ""}  justify-around h-[50vh] w-[80%] items-center flex flex-col gap-4`}>
-          <Link to={"/profile"}>
+          <Link to={"/profile"} onClick={()=>{setfirst("small")}}>
             <div className={`${(first === "small") ? " hover:scale-110 p-2 hover:translate-x-2" : "hidden"} w-[3rem] duration-200 flex hover:bg-slate-800 justify-center items-center gap-1 px-2  text-white cursor-pointer text-2xl rounded-md`}>
               <img src={currentUser.profilePicture} alt="Profile" className={`border-black border w-20 aspect-square object-cover rounded-full`} />
 
             </div>
           </Link>
-          <Link to={"/"}> <div className={`${(first === "small") ? " hover:scale-110 p-2 hover:translate-x-2" : ""} duration-200 flex hover:bg-slate-800 justify-center items-center gap-1 px-2  text-white cursor-pointer text-2xl rounded-md`} 
+          <Link onClick={()=>{setfirst("small")}} to={"/"}> <div className={`${(first === "small") ? " hover:scale-110 p-2 hover:translate-x-2" : ""} duration-200 flex hover:bg-slate-800 justify-center items-center gap-1 px-2  text-white cursor-pointer text-2xl rounded-md`} 
           onClick={() => { props.func("Feed") }}><BsBook className={``} />
             <span className={`${(first === "small") ? " hidden " : ""}`}>Feed</span></div></Link>
-          <Link to={"/projects"}><div className={`${(first === "small") ? " hover:scale-110 p-2 hover:translate-x-2" : ""} duration-200 hover:bg-slate-800 flex justify-center items-center text-2xl gap-2 px-2  text-white cursor-pointer rounded-md`} 
+          <Link onClick={()=>{setfirst("small")}}  to={"/projects"}><div className={`${(first === "small") ? " hover:scale-110 p-2 hover:translate-x-2" : ""} duration-200 hover:bg-slate-800 flex justify-center items-center text-2xl gap-2 px-2  text-white cursor-pointer rounded-md`} 
           onClick={() => { props.func("Projects") }}><BsCodeSquare />
             <span className={`${(first === "small") ? " hidden " : ""}`}>Projects</span>
 
           </div></Link>
-          <Link to={"/"}><div className={`${(first === "small") ? " hover:scale-110 p-2 hover:translate-x-2 " : ""} duration-200 hover:bg-slate-800 flex justify-center items-center text-2xl gap-2 px-2  text-white cursor-pointer rounded-md`} 
+          <Link onClick={()=>{setfirst("small")}} to={"/"}><div className={`${(first === "small") ? " hover:scale-110 p-2 hover:translate-x-2 " : ""} duration-200 hover:bg-slate-800 flex justify-center items-center text-2xl gap-2 px-2  text-white cursor-pointer rounded-md`} 
           onClick={() => { props.func("Resources") }}><BsDisplay /> <span className={`${(first === "small") ? " hidden " : ""}`}>Resources</span></div></Link>
-          <Link to={"/"}> <div className={`${(first === "small") ? " hover:scale-110 p-2 hover:translate-x-2 " : ""} duration-200 hover:bg-slate-800 flex justify-center items-center text-2xl gap-2 px-2  text-white cursor-pointer rounded-md`} 
+          <Link onClick={()=>{setfirst("small")}} to={"/"}> <div className={`${(first === "small") ? " hover:scale-110 p-2 hover:translate-x-2 " : ""} duration-200 hover:bg-slate-800 flex justify-center items-center text-2xl gap-2 px-2  text-white cursor-pointer rounded-md`} 
           onClick={() => { props.func("Snippets") }}><BsPen /> <span className={`${(first === "small") ? " hidden " : ""}`}>Snippets</span></div></Link>
 
 

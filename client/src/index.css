@@ -11,7 +11,59 @@ footer, header, hgroup, menu, nav, section {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  
 }
+
+.dashboardChildChild{
+    &::-webkit-scrollbar {
+        width: 0.5em;
+        height: 0.5em;
+       }
+     
+       &::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.552);
+        border-radius: 3px;
+     
+        &:hover {
+         background: rgba(255,255,255,.2);
+        }
+       }
+}
+.projectsCardProfile{
+    &::-webkit-scrollbar {
+        width: 0.5em;
+        height: 0.5em;
+       }
+     
+       &::-webkit-scrollbar-thumb {
+        background-color: rgba(255,255,255,.1);
+        border-radius: 3px;
+     
+        &:hover {
+         background: rgba(255,255,255,.2);
+        }
+       }
+}
+
+@font-face {
+    font-family: "Homemade Apple";
+    src: url("./font//HomemadeApple-Regular.ttf");
+  }
+@font-face {
+    font-family: "Seaweed Script";
+    src: url("./font/SeaweedScript-Regular.ttf");
+  }
+@font-face {
+    font-family: "Lexend";
+    src: url("./font/Lexend-Bold.ttf");
+  }
+  
+
+
+  @font-face {
+    font-family: "Mukta";
+    src: url("./font/Mukta-Regular.ttf");
+  }
 
 @tailwind base;
 @tailwind components;

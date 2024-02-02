@@ -1,18 +1,39 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { FaGithub, FaLink } from 'react-icons/fa6';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 function Profile() {
+
     const { currentUser, loading, error } = useSelector((state) => state.user);
-    console.log(currentUser);
     const tagColors = { WebDeveloper: "00A9FF", Creator: "FD8D14", ReactRockstar: "82CD47" }
     const techColors = { WebDeveloper: "00A9FF", Creator: "FD8D14", ReactJS: "82CD47", ExpressJS: "3C3633", Nodejs: "527853", MongoDB: "3A4D39", Python: "FFE382", Javascript: "FFA33C", TailwindCSS: "40A2D8" }
+    const [projects, setProjects] = useState(currentUser.projects)
+
+    useEffect(() => {
+        const gettingProjects = async () => {
+            // const result = await fetch(`http://localhost:3000/api/user/getProject/${currentUser._id}`, {
+                const result=await fetch(`https://flexfordev.onrender.com/api/user/getProject/${currentUser._id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: "include"
+            });
+            const data = await result.json()
+            setProjects(data)
+
+        }
+        gettingProjects()
+        console.log(projects);
+    }, [])
+
     return (
-        <div className='min-h-screen overflow-y-auto
+        <div className='h-[93vh] overflow-y-auto
         
-        bg-slate-500 w-[100%] flex flex-col  items-center p-5 gap-2'>
+        bg-[#141619] w-[100%] flex flex-col  items-center p-5 gap-2'>
             <div className='flex max-[767px]:flex-col gap-2 w-[100%]'>
-                <div className='gap-2 p-4 flex-col rounded-[30px] bg-[#262626] max-[767px]:justify-between max-[767px]:w-[100%] flex items-center  w-[50%]'>
+                <div className='h-[350px] shadow-lg ring-1 ring-white/5  gap-2 p-4 flex-col rounded-[30px] bg-[#1E1F24] max-[767px]:justify-between max-[767px]:w-[100%] flex items-center justify-center     w-[30%]'>
                     <div className='  flex flex-col gap-2 items-center'>
                         <img src={currentUser.profilePicture} className='  border-[2px] w-[8rem] rounded-full aspect-square object-cover' alt="" />
                         <div className='text-white flex flex-col'>
@@ -31,29 +52,46 @@ function Profile() {
                             Edit Profile</button>
                     </Link>
                 </div>
-                <div className=' p-4 rounded-[30px] bg-[#262626] flex-col max-[767px]:w-[100%] flex  w-[90%] gap-2'>
+                <div className='shadow-lg ring-1 ring-white/5 p-4 rounded-[30px] bg-[#1E1F24] flex-col max-[767px]:w-[100%] flex h-[350px]  w-[70%] gap-2'>
 
-                    
-                    <div className='flex gap-2 flex-col'>
+
+                    <div className='max-[767px]:justify-center projectsCardProfile p-2 flex gap-2 w-[100%] h-[350px] overflow-x-auto'>
                         {/* <div className="flex  w-[20%] flex-row items-center justify-center">
                             <button className="animate-border inline-block rounded-md bg-white bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 bg-[length:400%_400%] p-1">
                                 <span className="block rounded-md bg-slate-900 px-5 py-3 font-bold text-white"> Twitter</span>
                             </button>
                         </div> */}
-                        
+                        {
+                            (projects.length>0) ? (projects).map((project) => {
+                                return (<div className='
+                                shadow-lg ring-1 ring-black/5  flex justify-center gap-2 flex-col items-center min-w-[300px] h-[300px] rounded-md bg-[#141619] ' key={project.id}>
+                                    <img src={project.projectPicture} alt="Project Picture" className='w-[250px] h-[200px] object-cover border border-dashed border-black rounded-md' />
+                                    <div className='flex w-[80%] justify-between items-center  '>
+                                        <div className='text-white font-lexend'>{project.projectName}</div>
+                                        <div className=' font-mukta flex  gap-2'>
+                {project.deployLink ? <a target='blank' href={project.deployLink} className='shadow-lg ring-1 ring-black/5 text-white bg-blue-400 text-[20px] hover:bg-blue-500 rounded-full p-2'><FaLink /></a> : ""}
+                {project.githubLink ? <a target='blank' href={project.githubLink} className='shadow-lg ring-1 ring-black/5 text-white bg-orange-500 text-[20px] hover:bg-orange-600 rounded-full p-2 '><FaGithub />
+</a> : ""}
+              </div>
+                                    </div>
+                                    
+                                    
+                                </div>)
+                            }) : <div className='text-white font-lexend flex justify-center items-center w-[100%] h-[100%]'>Your Projects would have been displayed here if you hand any!</div>
+                        }
                     </div>
                 </div>
             </div>
 
-            <div className='p-4 w-[100%] rounded-[30px] bg-[#262626]'>
-            <div className=' max-[767px]:justify-center max-[767px]:w-[100%] w-[50%] flex flex-wrap gap-2'>
-                        {(currentUser.tags).map((tag) => {
-                            let tagCol = tag.split(" ").join("")
-                            return <span style={{ backgroundColor: `#${tagColors[tagCol]}` }} className={` w-fit h-fit p-2 rounded-2xl text-white`} key={tag}>{tag}</span>
-                        })}
-                    </div>
+            <div className='shadow-lg ring-1 ring-white/5 p-4 w-[100%] rounded-[30px] bg-[#1E1F24]'>
+                <div className=' max-[767px]:justify-center max-[767px]:w-[100%] w-[50%] flex flex-wrap gap-2'>
+                    {(currentUser.tags).map((tag) => {
+                        let tagCol = tag.split(" ").join("")
+                        return <span style={{ backgroundColor: `#${tagColors[tagCol]}` }} className={` w-fit h-fit p-2 rounded-2xl text-white`} key={tag}>{tag}</span>
+                    })}
+                </div>
             </div>
-            <div className='p-4 w-[100%] rounded-[30px] bg-[#262626]'>
+            <div className='shadow-lg ring-1 ring-white/5 p-4 w-[100%] rounded-[30px] bg-[#1E1F24]'>
                 <div className=' max-[767px]:justify-center max-[767px]:w-[100%] w-[100%] flex flex-wrap gap-2'>
                     {(currentUser.techStack).map((tech) => {
                         let tagCol = tech.split(" ").join("")

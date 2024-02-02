@@ -2,6 +2,7 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/
 import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { app } from '../firebase';
+import { FaGithub, FaLink } from "react-icons/fa6";
 
 const Projects = () => {
   const { currentUser, loading, error } = useSelector((state) => state.user);
@@ -61,7 +62,7 @@ const Projects = () => {
 
 
       // const res = await fetch(`http://localhost:3000/api/user/addProject/${currentUser._id}`, {
-      const res = await fetch(`https://flexfordev.onrender.com/api/user/addProject/${currentUser._id}`, {
+        const res = await fetch(`https://flexfordev.onrender.com/api/user/addProject/${currentUser._id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -76,7 +77,7 @@ const Projects = () => {
 
       const data = await res.json()
 
-      currentUser.projects = [...currentUser.projects, data]
+      setProjects([...projects, data])
       setShow(!show)
       setImage(" ")
       setFormData({ techStack: [], email: currentUser.email })
@@ -89,8 +90,8 @@ const Projects = () => {
   }
   useEffect(() => {
     const gettingProjects = async () => {
-      // const result=await fetch(`http://localhost:3000/api/user/getProject/${currentUser._id}`, {
-      const result=await fetch(`https://flexfordev.onrender.com/api/user/getProject/${currentUser._id}`, {
+      // const result = await fetch(`http://localhost:3000/api/user/getProject/${currentUser._id}`, {
+        const result=await fetch(`https://flexfordev.onrender.com/api/user/getProject/${currentUser._id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -107,15 +108,15 @@ const Projects = () => {
       handleFileUpload(image);
     }
   }, [image, currentUser.projects])
-  console.log(currentUser);
-  return (
-    <div className='dashboardParent min-h-screen overflow-y-auto
-         w-[100%] p-5'>
 
-      <div className={`${show ? "" : "hidden"} bg-white dashboardChild  w-[400px] rounded-[30px]
+  return (
+    <div className='dashboardParent min-h-screen
+         w-[100%] p-5 flex flex-col gap-2 bg-[#F9F9FC]'>
+
+      <div className={`${show ? "" : "hidden"} bg-white dashboardChild  w-[400px] rounded-[10px]
           border border-black
            border-dashed overflow-hidden`}>
-        <form name='projectForm' onSubmit={handleSubmit} className={`   h-[400px] flex flex-col items-center rounded-[30px] p-4 gap-2 overflow-y-scroll`}>
+        <form name='projectForm' onSubmit={handleSubmit} className={` dashboardChildChild   h-[400px] flex flex-col items-center rounded-[10px] p-4 gap-2 overflow-y-scroll`}>
           Add Project
           <div className='w-[100%]'>
             <input
@@ -191,19 +192,24 @@ const Projects = () => {
           </div>
         </form>
       </div>
-      <button onClick={() => { setShow(!show) }} className='absolute right-10 border-2 p-2 rounded-[10px] border-black border-dashed '>Add Project</button>
-      <div className='w-[100%] gap-2 flex flex-wrap'>
+      <div className='w-[100%]'><button onClick={() => { setShow(!show) }} className=' 
+      shadow-lg ring-1 ring-black/5 hover:bg-[#e9e9e9] duration-300 border-2 p-2 rounded-[10px] font-lexend bg-[#ffffff] '>Add Project</button></div>
+      <div className='dashboardChildChild w-[100%] h-[80vh] gap-2 flex flex-wrap justify-center  overflow-y-auto p-6'>
         {
-          (projects).map((project) => {
-            return (<div className=' flex justify-center gap-2 flex-col items-center w-[400px] h-[300px] border-dashed border-black border ' key={project.id}>
-              <img src={project.projectPicture } alt="Project Picture" className='w-[300px] h-[200px] object-cover border border-dashed border-black rounded-md' />
-              <div>{project.projectName}</div>
-              <div className='w-[80%] flex justify-around'>
-                {project.deployLink?<a href={project.deployLink} className=' bg-sky-600 text-white px-2 w-[100px] text-center rounded-md'>Live</a>:""}
-                {project.githubLink?<a href={project.githubLink} className=' bg-orange-500 text-white px-2 w-[100px] text-center rounded-md '>Github</a>:""}
-              </div>
-            </div>)
-          })
+          (projects.length > 0) ? (
+            (projects).map((project) => {
+              return (<div className='shadow-lg ring-1 ring-black/5 bg-white flex justify-center gap-2 flex-col items-center w-[400px] h-[300px] rounded-xl ' key={project.id}>
+                <div className='w-[70%] flex justify-between items-center font-lexend text-[120%]'><div>{project.projectName}</div><div className=' font-mukta flex  gap-2'>
+                  {project.deployLink ? <a target='blank' href={project.deployLink} className='shadow-lg ring-1 ring-black/5 text-white bg-blue-400 text-[20px] hover:bg-blue-500 rounded-full p-2'><FaLink /></a> : ""}
+                  {project.githubLink ? <a target='blank' href={project.githubLink} className='shadow-lg ring-1 ring-black/5 text-white bg-orange-500 text-[20px] hover:bg-orange-600 rounded-full p-2 '><FaGithub />
+  </a> : ""}
+                </div></div>
+                <img src={project.projectPicture} alt="Project Picture" className='w-[300px] h-[200px] object-cover border border-black rounded-md' />
+  
+                
+              </div>)
+            })
+          ):<div className='font-lexend text-gray-600 text-[250%]'>Add a Project!</div>
         }
       </div>
     </div>
