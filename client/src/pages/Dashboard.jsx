@@ -36,7 +36,7 @@ const Dashboard = (props) => {
           <Link to={"/"}> <div className={`${(first === "small") ? " hover:scale-110 p-2 hover:translate-x-2" : ""} duration-200 flex hover:bg-slate-800 justify-center items-center gap-1 px-2  text-white cursor-pointer text-2xl rounded-md`} 
           onClick={() => { props.func("Feed") }}><BsBook className={``} />
             <span className={`${(first === "small") ? " hidden " : ""}`}>Feed</span></div></Link>
-          <Link to={"/"}><div className={`${(first === "small") ? " hover:scale-110 p-2 hover:translate-x-2" : ""} duration-200 hover:bg-slate-800 flex justify-center items-center text-2xl gap-2 px-2  text-white cursor-pointer rounded-md`} 
+          <Link to={"/projects"}><div className={`${(first === "small") ? " hover:scale-110 p-2 hover:translate-x-2" : ""} duration-200 hover:bg-slate-800 flex justify-center items-center text-2xl gap-2 px-2  text-white cursor-pointer rounded-md`} 
           onClick={() => { props.func("Projects") }}><BsCodeSquare />
             <span className={`${(first === "small") ? " hidden " : ""}`}>Projects</span>
 

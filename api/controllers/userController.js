@@ -84,9 +84,9 @@ export const test = (req, res) => {
 }
   
 export const addProject = async (req,res,next) => {
-  // if (req.user.id !== req.params.id) {
-  //   return next(errorHandler(401, 'You can only projects to your account!'));
-  // }
+  if (req.user.id !== req.params.id) {
+    return next(errorHandler(401, 'You can add only projects to your account!'));
+  }
   try {
     const { projectName, techStack, description, githubLink,deployLink, projectPicture,email } = req.body
     const date = new Date()
@@ -102,9 +102,21 @@ export const addProject = async (req,res,next) => {
       { new: true }
     );
 
-        res.status(201).json({message:"Project created successfully"})
+        res.status(201).json(project)
 
   } catch (error) {
     next(error);
+  }
+}
+
+export const getProject = async (req, res, next) => {
+  if (req.user.id !== req.params.id) {
+    return next(errorHandler(401, 'You can only view your projects!'));
+  }
+  try {
+    const user = await User.find({_id:req.params.id})
+    res.status(201).json(user[0].projects)
+  } catch (error) {
+    next(error)
   }
 }

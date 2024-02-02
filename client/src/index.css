@@ -3,7 +3,15 @@ footer, header, hgroup, menu, nav, section {
     display: block;
 }
 
-
+.dashboardParent{
+    position: relative;
+}
+.dashboardChild{
+    position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
 @tailwind base;
 @tailwind components;
