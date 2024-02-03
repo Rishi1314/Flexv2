@@ -5,7 +5,7 @@ import { Link, useParams } from 'react-router-dom';
 
 
 export const PublicProfile = () => {
-    const [user, setUser] = useState("")
+    const [user, setUser] = useState(null)
     const { id } = useParams();
     const techColors = { ReactJS: "82CD47", ExpressJS: "3C3633", Nodejs: "527853", MongoDB: "3A4D39", Python: "FFE382", Javascript: "FFA33C", TailwindCSS: "40A2D8", Flutter: "36BAF6", HTML: 'E5532D', CSS: "2D53E5", C: '085D9F', Cpp: '085D9F', MySQL: "F29418", Firebase:"F5831E" }
     const tagColors = { AIAficionado:"424769",CompetitiveCoder:"005B41",FullStackMagician:"7D7C7C",PythonPro:"FFE382",UIUXUnicorn:"711DB0",AppDeveloper:"0079FF",WebDeveloper: "00A9FF", Creator: "FD8D14", ReactRockstar: "82CD47" }
@@ -21,14 +21,16 @@ export const PublicProfile = () => {
         const loader = async () => {
             let res=await axios.post(`/api/user/getUser/${id}`,JSON.stringify({}),customConfig)
             setUser(res.data[0]);
+            
           }
           loader();
     
       
-    }, [])
+    }, [id])
     
-  return (
-    <div className='h-[93vh] overflow-y-auto
+  
+    if (user) {
+        return(<div className='h-[93vh] overflow-y-auto
         
         bg-[#141619] w-[100%] flex flex-col  items-center p-5 gap-2'>
             <div className='flex max-[767px]:flex-col gap-2 w-[100%]'>
@@ -95,6 +97,11 @@ export const PublicProfile = () => {
                 </div>
             </div>
 
-        </div>
-  )
+        </div>)
+    } else {
+        return <div className='h-[93vh] overflow-y-auto
+        
+        bg-[#141619] w-[100%] flex flex-col  items-center p-5 gap-2 text-white'>User Does not Exist</div>
+    }
+  
 }
