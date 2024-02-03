@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { app } from '../firebase';
 import { FaGithub, FaLink } from "react-icons/fa6";
-import Cookies from 'js-cookie';
 const Projects = () => {
   const { currentUser, loading, error } = useSelector((state) => state.user);
   const descRef = useRef();
@@ -17,7 +16,7 @@ const Projects = () => {
 
 
   const [formData, setFormData] = useState({ techStack: [], email: currentUser.email });
-  const techs = ["ReactJS", "ExpressJS", "NodeJS", "MongoDB", "Python", "Javascript", "TailwindCSS","Flutter","HTML","CSS","C","Cpp","MySQL","Firebase","Java"]
+  const techs = ["ReactJS", "ExpressJS", "NodeJS", "MongoDB", "Python", "Javascript", "TailwindCSS", "Flutter", "HTML", "CSS", "C", "Cpp", "MySQL", "Firebase", "Java"]
 
   const handleFileUpload = async () => {
     const storage = getStorage(app);
@@ -62,7 +61,7 @@ const Projects = () => {
 
 
 
-      const res = await fetch(`http://localhost:3000/api/user/addProject/${currentUser._id}`, {
+      const res = await fetch(`/api/user/addProject/${currentUser._id}`, {
         // const res = await fetch(`https://flexfordev.onrender.com/api/user/addProject/${currentUser._id}`, {
         method: 'POST',
         headers: {
@@ -90,14 +89,14 @@ const Projects = () => {
     }
   }
   useEffect(() => {
-    
+
     function getCookie(key) {
       var b = document.cookie.match("(^|;)\\s*" + key + "\\s*=\\s*([^;]+)");
       return b ? b.pop() : "";
     }
     console.log(getCookie("access_token"))
     const gettingProjects = async () => {
-      const result = await fetch(`http://localhost:3000/api/user/getProject/${currentUser._id}`, {
+      const result = await fetch(`/api/user/getProject/${currentUser._id}`, {
         // const result=await fetch(`https://flexfordev.onrender.com/api/user/getProject/${currentUser._id}`, {
         method: 'POST',
         headers: {
@@ -123,7 +122,7 @@ const Projects = () => {
       <div className={`${show ? "" : "hidden"} addProjectCard dashboardChild  w-[500px] max-[767px]:w-[90%] rounded-[10px]
           border border-black
            border-dashed overflow-hidden`}>
-        <form  name='projectForm' onSubmit={handleSubmit} className={`text-white dashboardChildChild   h-[400px] flex flex-col items-center rounded-[10px] p-4 gap-2 overflow-y-scroll`}>
+        <form name='projectForm' onSubmit={handleSubmit} className={`text-white dashboardChildChild   h-[400px] flex flex-col items-center rounded-[10px] p-4 gap-4 overflow-y-scroll`}>
           <span className='font-lexend'>Add Project</span>
           <div className='w-[100%] swift relative'>
             <input
@@ -197,13 +196,24 @@ const Projects = () => {
               })}
             </div>
           </div>
-          <div className='w-[100%]'>
-            <button type='submit' className='w-[100%] bg-red-500 text-white px-2 rounded-md text-2xl'>Submit</button>
+          <div className='w-[100%] flex justify-center items-center'>
+            <button type='submit' className="group group-hover:before:duration-500 group-hover:after:duration-500 after:duration-500 hover:border-rose-300 hover:before:[box-shadow:_20px_20px_20px_30px_#a21caf] duration-500 before:duration-500 hover:duration-500 underline underline-offset-2 hover:after:-right-8 hover:before:right-12 hover:before:-bottom-8 hover:before:blur hover:underline hover:underline-offset-4  origin-left hover:decoration-2 hover:text-rose-300 relative bg-neutral-800 h-16 w-64 border text-left p-3 text-gray-50 text-base font-bold rounded-lg  overflow-hidden  before:absolute before:w-12 before:h-12 before:content[''] before:right-1 before:top-1 before:z-10 before:bg-violet-500 before:rounded-full before:blur-lg  after:absolute after:z-10 after:w-20 after:h-20 after:content['']  after:bg-rose-300 after:right-8 after:top-3 after:rounded-full after:blur-lg">
+  Create Project
+</button>
+
+
           </div>
         </form>
       </div>
-      <div className='w-[100%]'><button onClick={() => { setShow(!show) }} className=' 
-      shadow-lg ring-1 ring-black/5 hover:bg-[#e9e9e9] duration-300 border-2 p-2 rounded-[10px] font-lexend bg-[#ffffff] '>Add Project</button></div>
+      <div className='w-[100%]'>
+        
+      <button onClick={() => { setShow(!show) }} className="shadow-lg ring-1 ring-black/5 group group-hover:before:duration-500 group-hover:after:duration-500 after:duration-500 hover:border-rose-300 hover:before:[box-shadow:_20px_20px_20px_30px_#a21caf] duration-500 before:duration-500 hover:duration-500 underline underline-offset-2 hover:after:-right-8 hover:before:right-12 hover:before:-bottom-8 hover:before:blur hover:underline hover:underline-offset-4  origin-left hover:decoration-2 hover:text-rose-300 relative bg-neutral-800 h-16 w-64 border text-left p-3 text-gray-50 text-base font-bold rounded-lg  overflow-hidden  before:absolute before:w-12 before:h-12 before:content[''] before:right-1 before:top-1 before:z-10 before:bg-violet-500 before:rounded-full before:blur-lg  after:absolute after:z-10 after:w-20 after:h-20 after:content['']  after:bg-rose-300 after:right-8 after:top-3 after:rounded-full after:blur-lg">
+  Add Project
+</button>
+
+
+      
+      </div>
       <div className='dashboardChildChild w-[100%] h-[80vh] gap-2 flex flex-wrap justify-center  overflow-y-auto p-6'>
         {
           (projects.length > 0) ? (
@@ -212,14 +222,14 @@ const Projects = () => {
                 <div className='w-[70%] flex justify-between items-center font-lexend text-[120%]'><div className='text-white'>{project.projectName}</div><div className=' font-mukta flex  gap-2'>
                   {project.deployLink ? <a target='blank' href={project.deployLink} className='shadow-lg ring-1 ring-black/5 text-white bg-blue-400 text-[20px] hover:bg-blue-500 rounded-full p-2'><FaLink /></a> : ""}
                   {project.githubLink ? <a target='blank' href={project.githubLink} className='shadow-lg ring-1 ring-black/5 text-white bg-orange-500 text-[20px] hover:bg-orange-600 rounded-full p-2 '><FaGithub />
-  </a> : ""}
+                  </a> : ""}
                 </div></div>
                 <img src={project.projectPicture} alt="Project Picture" className='w-[300px] h-[200px] object-cover border border-black rounded-md' />
-  
-                
+
+
               </div>)
             })
-          ):<div className='font-lexend text-gray-600 text-[250%]'>Add a Project!</div>
+          ) : <div className='font-lexend text-gray-600 text-[250%]'>Add a Project!</div>
         }
       </div>
     </div>

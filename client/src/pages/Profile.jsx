@@ -14,7 +14,7 @@ function Profile() {
     useEffect(() => {
        
         const gettingProjects = async () => {
-            const result = await fetch(`http://localhost:3000/api/user/getProject/${currentUser._id}`, {
+            const result = await fetch(`/api/user/getProject/${currentUser._id}`, {
                 // const result=await fetch(`https://flexfordev.onrender.com/api/user/getProject/${currentUser._id}`, {
                 method: 'POST',
                 headers: {
@@ -34,7 +34,7 @@ function Profile() {
         
         bg-[#141619] w-[100%] flex flex-col  items-center p-5 gap-2'>
             <div className='flex max-[767px]:flex-col gap-2 w-[100%]'>
-                <div className='h-[350px] shadow-lg ring-1 ring-white/5  gap-2 p-4 flex-col rounded-[30px] bg-[#1E1F24] max-[767px]:justify-between max-[767px]:w-[100%] flex items-center justify-center     w-[30%]'>
+                {/* <div className='h-[350px] shadow-lg ring-1 ring-white/5  gap-2 p-4 flex-col rounded-[30px] bg-[#1E1F24] max-[767px]:justify-between max-[767px]:w-[100%] flex items-center justify-center     w-[30%]'>
                     <div className='  flex flex-col gap-2 items-center'>
                         <img src={currentUser.profilePicture} className='  border-[2px] w-[8rem] rounded-full aspect-square object-cover' alt="" />
                         <div className='text-white flex flex-col'>
@@ -52,11 +52,30 @@ function Profile() {
                   shadow-[0px_4px_16px_rgba(44, 44, 44, 1),_0px_8px_24px_rgba(44, 44, 44, 1),_0px_16px_56px_rgba(44, 44, 44, 1)] text-white py-2 px-4 rounded-xl'>
                             Edit Profile</button>
                     </Link>
-                </div>
-                <div className='shadow-lg ring-1 ring-white/5 p-4 rounded-[30px] bg-[#1E1F24] flex-col max-[767px]:w-[100%] flex h-[350px]  w-[70%] gap-2'>
+                </div> */}
+                <div className="group before:hover:scale-95 before:hover:w-[99%] before:hover:h-[350px] before:hover:rounded-b-2xl before:transition-all before:duration-500 before:content-[''] before:w-[100%] before:h-24 before:rounded-t-2xl before:bg-gradient-to-bl from-sky-200 via-orange-200 to-orange-700 before:absolute before:top-0  h-[350px] relative bg-[#1E1F24] flex items-center justify-center flex-col rounded-[30px] overflow-hidden w-[30%]  max-[767px]:w-[100%]">
+                    <div className="w-28 h-28 bg-blue-700 mt-8 rounded-full border-4 border-slate-50 z-10 group-hover:scale-60 group-hover:-translate-x-0  group-hover:-translate-y-10 transition-all duration-500"><img src={currentUser.profilePicture} className='  border-[2px] w-[8rem] rounded-full aspect-square object-cover' alt="" /></div>
+                    
+  <div className="z-10 w-[90%] group-hover:-translate-y-10 transition-all flex flex-col gap-2 items-center duration-500">
+                        <span className=" text-white text-2xl font-semibold">{currentUser.username }</span>
+                        <div className='flex justify-evenly text-white w-[100%]'><span className='max-[767px]:text-[100%] text-xl'>{currentUser.firstName}</span>
+                            <span className='text-xl max-[767px]:text-[100%] '>{currentUser.lastName}</span></div>
+                            <div className='max-[767px]:w-[100%] max-[767px]:min-h-fit bg-white/50 w-[90%]  p-2 rounded-md'>
+                        {`" ${currentUser.description}. "`}
+                        </div>
+                        <Link to={"/editprofile"}>
+                        <button className=' max-[767px]:text-[80%] bg-black hover:opacity-80
+                  shadow-[0px_4px_16px_rgba(44, 44, 44, 1),_0px_8px_24px_rgba(44, 44, 44, 1),_0px_16px_56px_rgba(44, 44, 44, 1)] text-white py-2 px-4 rounded-xl'>
+                            Edit Profile</button>
+                    </Link>
+                    </div>
+                    
+  
+</div>
+                <div className='shadow-lg ring-1 ring-white/5 p-4 rounded-[30px] bg-[#1E1F24] flex-col max-[767px]:w-[100%] flex h-[350px]  w-[70%] gap-2  '>
 
 
-                    <div className='max-[767px]:justify-center projectsCardProfile p-2 flex gap-2 w-[100%] h-[350px] overflow-x-auto'>
+                    <div className=' max-[767px]: projectsCardProfile p-2 flex gap-2 w-[100%] h-[350px] overflow-x-auto overflow-y-hidden'>
                         {/* <div className="flex  w-[20%] flex-row items-center justify-center">
                             <button className="animate-border inline-block rounded-md bg-white bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 bg-[length:400%_400%] p-1">
                                 <span className="block rounded-md bg-slate-900 px-5 py-3 font-bold text-white"> Twitter</span>

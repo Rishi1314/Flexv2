@@ -62,8 +62,8 @@ export default function EditProfile() {
     e.preventDefault();
     try {
       dispatch(updateUserStart());
-      const res = await fetch(`https://flexfordev.onrender.com/api/user/update/${currentUser._id}`, {
-      // const res = await fetch(`http://localhost:3000/api/user/update/${currentUser._id}`, {
+      // const res = await fetch(`https://flexfordev.onrender.com/api/user/update/${currentUser._id}`, {
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ export default function EditProfile() {
   const handleSignOut = async () => {
     try {
       // await axios.get('http://localhost:3000/api/auth/signout');
-      await fetch('https://flexfordev.onrender.com/api/auth/signout');
+      await fetch('/api/auth/signout');
       dispatch(signOut())
     } catch (error) {
       console.log(error);

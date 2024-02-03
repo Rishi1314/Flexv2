@@ -11,7 +11,7 @@ export default function Home() {
 };
   useEffect(() => {
     const loader = async () => {
-      let res=await axios.post("http://localhost:3000/api/user/getUsers",JSON.stringify({}),customConfig)
+      let res=await axios.post("/api/user/getUsers",JSON.stringify({}),customConfig)
       setUsers(res.data);
     }
     loader();

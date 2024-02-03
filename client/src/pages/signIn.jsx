@@ -29,7 +29,7 @@ export default function SignIn() {
     e.preventDefault();
     try {
       dispatch(signInStart());
-      let res=await axios.post("http://localhost:3000/api/auth/signin",JSON.stringify(formData),customConfig)
+      let res=await axios.post("/api/auth/signin",JSON.stringify(formData),customConfig)
       // let res=await axios.post("https://flexfordev.onrender.com/api/auth/signin",JSON.stringify(formData),customConfig)
       // let data = await fetch('http://localhost:3000/api/auth/signin', {
       //   method: 'POST',

@@ -19,7 +19,7 @@ export const PublicProfile = () => {
     useEffect(() => {
         
         const loader = async () => {
-            let res=await axios.post(`http://localhost:3000/api/user/getUser/${id}`,JSON.stringify({}),customConfig)
+            let res=await axios.post(`/api/user/getUser/${id}`,JSON.stringify({}),customConfig)
             setUser(res.data[0]);
           }
           loader();
