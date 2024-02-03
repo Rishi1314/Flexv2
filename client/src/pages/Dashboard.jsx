@@ -1,12 +1,23 @@
 import React, { useState } from 'react'
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import { FaCaretLeft } from "react-icons/fa6";
 import { BsDisplay,  BsCodeSquare, BsPen,BsPower, BsSearch } from "react-icons/bs";
+import { signOut } from '../redux/user/userSlice';
 
 const Dashboard = (props) => {
   const { currentUser } = useSelector((state) => state.user)
   const [first, setfirst] = useState("small")
+  const dispatch=useDispatch()
+  const handleSignOut = async () => {
+    try {
+      // await axios.get('http://localhost:3000/api/auth/signout');
+      await fetch('/api/auth/signout');
+      dispatch(signOut())
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   if (currentUser) {
     return (
@@ -51,8 +62,8 @@ const Dashboard = (props) => {
 
         </div>
         <div className=' absolute bottom-20'>
-        <Link to={"/signout"}> <div className={`${(first === "small") ? " max-[767px]:hidden hover:scale-110 p-2 hover:translate-x-2 " : ""} duration-200  hover:bg-[#000000] shadow-lg ring-1 ring-black/5 flex justify-center items-center text-2xl gap-2 px-2  text-white cursor-pointer rounded-md`} 
-          onClick={() => { props.func("Snippets") }}><BsPower /> <span className={`${(first === "small") ? " hidden " : ""}`}>Logout</span></div></Link>
+         <div className={`${(first === "small") ? " max-[767px]:hidden hover:scale-110 p-2 hover:translate-x-2 " : ""} duration-200  hover:bg-[#000000] shadow-lg ring-1 ring-black/5 flex justify-center items-center text-2xl gap-2 px-2  text-white cursor-pointer rounded-md`} 
+          onClick={handleSignOut}><BsPower /> <span className={`${(first === "small") ? " hidden " : ""}`}>Logout</span></div>
         </div>
       </div>
 

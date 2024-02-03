@@ -20,16 +20,16 @@ export default function SignIn() {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
   const customConfig = {
-        headers: {
-        'Content-Type': 'application/json'
-        },
-        withCredentials: true, credentials: 'include'
-    };
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    withCredentials: true, credentials: 'include'
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       dispatch(signInStart());
-      let res=await axios.post("/api/auth/signin",JSON.stringify(formData),customConfig)
+      let res = await axios.post("/api/auth/signin", JSON.stringify(formData), customConfig)
       // let res=await axios.post("https://flexfordev.onrender.com/api/auth/signin",JSON.stringify(formData),customConfig)
       // let data = await fetch('http://localhost:3000/api/auth/signin', {
       //   method: 'POST',
@@ -38,9 +38,9 @@ export default function SignIn() {
       //   },
       //   body: JSON.stringify(formData),
       // });
-      const data =await res.data
+      const data = await res.data
       // console.log(res);
-      if (data.success === false) { 
+      if (data.success === false) {
         dispatch(signInFailure(data.message));
         return;
       }
@@ -52,43 +52,57 @@ export default function SignIn() {
     }
   };
   return (
-    <div loading="lazy" className="flex justify-center items-center min-h-screen w-[100%]">
-      <div className='p-3 rounded-xl bg-white shadow-lg ring-1 ring-black/5 w-[35%] max-[767px]:w-[100%]'>
+    <div loading="lazy" className="flex justify-center items-center min-h-screen w-[100%] bg-[#141619]">
+      <div className='p-3 text-white addProjectCard dashboardChild   rounded-[10px]
+         shadow-lg ring-1 ring-black/5 w-[25%] max-[767px]:w-[90%]'>
         <h1 className='text-3xl text-center font-semibold my-7'>Log In</h1>
-        <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-          <input
-            type='email'
-            placeholder='Email'
-            id='email'
-            className='border border-black border-dashed bg-white placeholder:text-black p-3 rounded-lg'
-            onChange={handleChange}
-          />
-          <input
-            type='password'
-            placeholder='Password'
-            id='password'
-            className='border border-black border-dashed bg-white placeholder:text-black p-3 rounded-lg'
-            onChange={handleChange}
-          />
-          <button
-            disabled={loading}
-            className='bg-gradient-to-r from-cyan-500 to-blue-500 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80'
-          >
-            {loading ? 'Loading...' : 'Sign In'}
+        <form onSubmit={handleSubmit} className='flex items-center flex-col gap-4'>
+          <div className='w-[70%] swift relative'>
+            <input
+              type='email'
+              placeholder='Email'
+              id='email'
+              className='w-[100%]
+            addProjectCardInput p-3'
+              onChange={handleChange}
+            />
+            <span className='input-border'></span>
+          </div>
+          <div className='w-[70%] swift relative'>
+            <input
+              type='password'
+              placeholder='Password'
+              id='password'
+              className='w-[100%]
+            addProjectCardInput p-3'
+              onChange={handleChange}
+            />
+            <span className='input-border'></span>
+          </div>
+
+
+
+
+
+          <button disabled={loading} className="button w-[50%] font-lexend">
+            <span>
+              {loading ? 'Loading...' : 'Sign In'}
+
+            </span>
           </button>
-          <hr/>
+          <div className='bg-[#bbb] w-[70%] h-[1px]'></div>
           <OAuth />
         </form>
         <div className='w-[100%] justify-center flex gap-2 mt-5'>
           <p>Dont Have an account?</p>
-          <Link to='/sign-up' >
-            <span className='text-blue-500'>Sign up</span>
+          <Link to='/sign-up' className='hover:scale-105 duration-200' >
+            <span className='  text-black px-2 rounded-lg font-mukta bg-white'>Sign up</span>
           </Link>
         </div>
         <div className='flex w-[100%] justify-center'>
-        <p className='text-red-700 mt-5'>
-          {error ? error.message || 'Something went wrong!' : ''}
-        </p>
+          <p className='text-red-700 mt-5'>
+            {error ? error.message || 'Something went wrong!' : ''}
+          </p>
         </div>
       </div>
     </div>

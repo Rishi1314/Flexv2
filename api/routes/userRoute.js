@@ -10,7 +10,7 @@ router.post("/addProject/:id",verifyToken,addProject)
 router.delete("/delete/:id",verifyToken,deleteUser)
 
 router.post('/getProject/:id',verifyToken,getProject);
-router.post('/getUser/:id',verifyToken,getUser);
+router.post('/getUser/:id',getUser);
 router.post('/getUsers/',verifyToken,getUsers);
 router.get('/', test);
 

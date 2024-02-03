@@ -32,12 +32,13 @@ export default function App() {
       <Route path="/" element={<Home/>}/>
       <Route path="/profile" element={<Profile/>}/>
       <Route path="/projects" element={<Projects/>}/>
-      <Route path="/user/:id?" element={<PublicProfile/>}/>
       </Route>
       <Route path="/onboarding" element={<Onboarding/>}/>
       <Route path="/editprofile" element={<EditProfile/>}/>
     </Route>
-      <Route path="/about" element={<About/>}/>
+            <Route path="/about" element={<About />} />
+            <Route path="/user/:id?" element={<PublicProfile/>}/>
+
       <Route element={<PrivateRouteSign/>}>
       <Route path="/sign-in" element={<Signin/>}/>
       <Route path="/sign-up" element={<Signup/>}/>

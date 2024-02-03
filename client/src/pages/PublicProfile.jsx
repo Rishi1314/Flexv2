@@ -10,7 +10,7 @@ export const PublicProfile = () => {
 
     const [user, setUser] = useState(null)
     const { id } = useParams();
-    const techColors = { ReactJS: "82CD47", ExpressJS: "3C3633", Nodejs: "527853", MongoDB: "3A4D39", Python: "FFE382", Javascript: "FFA33C", TailwindCSS: "40A2D8", Flutter: "36BAF6", HTML: 'E5532D', CSS: "2D53E5", C: '085D9F', Cpp: '085D9F', MySQL: "F29418", Firebase:"F5831E" }
+    const techColors = { ReactJS: "82CD47", ExpressJS: "3C3633",NodeJS: "527853", Nodejs: "527853", MongoDB: "3A4D39", Python: "FFE382", Javascript: "FFA33C", TailwindCSS: "40A2D8", Flutter: "36BAF6", HTML: 'E5532D', CSS: "2D53E5", C: '085D9F', Cpp: '085D9F', MySQL: "F29418", Firebase:"F5831E" }
     const tagColors = { AIAficionado:"424769",CompetitiveCoder:"005B41",FullStackMagician:"7D7C7C",PythonPro:"FFE382",UIUXUnicorn:"711DB0",AppDeveloper:"0079FF",WebDeveloper: "00A9FF", Creator: "FD8D14", ReactRockstar: "82CD47" }
     const navigate=useNavigate()
     const customConfig = {
@@ -30,8 +30,10 @@ export const PublicProfile = () => {
     
       
     }, [id])
-    if (id === currentUser.username) {
-        navigate("/profile")
+    if (currentUser) {
+        if (id === currentUser.username) {
+            navigate("/profile")
+        }
     }
   
     if (user) {
@@ -44,7 +46,7 @@ export const PublicProfile = () => {
                     
   <div className="z-10 w-[90%] group-hover:-translate-y-10 transition-all flex flex-col gap-2 items-center duration-500">
                         <span className=" text-white text-2xl font-semibold">{user.username }</span>
-                        <div className='flex justify-evenly text-white w-[100%]'><span className='max-[767px]:text-[100%] text-xl'>{user.firstName}</span>
+                        <div className='flex justify-evenly text-white w-[50%]'><span className='max-[767px]:text-[100%] text-xl'>{user.firstName}</span>
                             <span className='text-xl max-[767px]:text-[100%] '>{user.lastName}</span></div>
                             <div className='max-[767px]:w-[100%] max-[767px]:min-h-fit bg-white/50 w-[90%]  p-2 rounded-md'>
                         {`" ${user.description}. "`}
@@ -89,6 +91,7 @@ export const PublicProfile = () => {
                 <div className=' max-[767px]:justify-center max-[767px]:w-[100%] w-[50%] flex flex-wrap gap-2'>
                     {(user.tags).map((tag) => {
                         let tagCol = tag.split(" ").join("").split("-").join("").split("/").join("")
+                        
                         return <span style={{ backgroundColor: `#${tagColors[tagCol]}` }} className={` w-fit h-fit p-2 rounded-2xl text-white`} key={tag}>{tag}</span>
                     })}
                 </div>
