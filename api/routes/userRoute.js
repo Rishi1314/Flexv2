@@ -1,6 +1,6 @@
 import express from "express";
 import { verifyToken } from "../utils/verifyUser.js";
-import { test, updateUser,deleteUser, onboardUser, addProject, getProject } from "../controllers/userController.js";
+import { test, updateUser,deleteUser, onboardUser, addProject, getProject, getUsers, getUser } from "../controllers/userController.js";
 
 const router=express.Router();
 
@@ -10,6 +10,8 @@ router.post("/addProject/:id",verifyToken,addProject)
 router.delete("/delete/:id",verifyToken,deleteUser)
 
 router.post('/getProject/:id',verifyToken,getProject);
+router.post('/getUser/:id',verifyToken,getUser);
+router.post('/getUsers/',verifyToken,getUsers);
 router.get('/', test);
 
 

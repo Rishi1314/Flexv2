@@ -1,51 +1,49 @@
+import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { FaGithub, FaLink } from 'react-icons/fa6';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
-function Profile() {
 
-    const { currentUser, loading, error } = useSelector((state) => state.user);
+export const PublicProfile = () => {
+    const [user, setUser] = useState("")
+    const { id } = useParams();
+    const techColors = { ReactJS: "82CD47", ExpressJS: "3C3633", Nodejs: "527853", MongoDB: "3A4D39", Python: "FFE382", Javascript: "FFA33C", TailwindCSS: "40A2D8", Flutter: "36BAF6", HTML: 'E5532D', CSS: "2D53E5", C: '085D9F', Cpp: '085D9F', MySQL: "F29418", Firebase:"F5831E" }
     const tagColors = { AIAficionado:"424769",CompetitiveCoder:"005B41",FullStackMagician:"7D7C7C",PythonPro:"FFE382",UIUXUnicorn:"711DB0",AppDeveloper:"0079FF",WebDeveloper: "00A9FF", Creator: "FD8D14", ReactRockstar: "82CD47" }
 
-    const techColors = { ReactJS: "82CD47", ExpressJS: "3C3633", Nodejs: "527853", MongoDB: "3A4D39", Python: "FFE382", Javascript: "FFA33C", TailwindCSS: "40A2D8", Flutter: "36BAF6", HTML: 'E5532D', CSS: "2D53E5", C: '085D9F', Cpp: '085D9F', MySQL: "F29418", Firebase:"F5831E" }
-    const [projects, setProjects] = useState(currentUser.projects)
-
+    const customConfig = {
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        withCredentials: true, credentials: 'include'
+    };
     useEffect(() => {
-       
-        const gettingProjects = async () => {
-            const result = await fetch(`http://localhost:3000/api/user/getProject/${currentUser._id}`, {
-                // const result=await fetch(`https://flexfordev.onrender.com/api/user/getProject/${currentUser._id}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: "include"
-            });
-            const data = await result.json()
-            setProjects(data)
-
-        }
-        gettingProjects()
+        
+        const loader = async () => {
+            let res=await axios.post(`http://localhost:3000/api/user/getUser/${id}`,JSON.stringify({}),customConfig)
+            setUser(res.data[0]);
+          }
+          loader();
+    
+      
     }, [])
-
-    return (
-        <div className='h-[93vh] overflow-y-auto
+    
+  return (
+    <div className='h-[93vh] overflow-y-auto
         
         bg-[#141619] w-[100%] flex flex-col  items-center p-5 gap-2'>
             <div className='flex max-[767px]:flex-col gap-2 w-[100%]'>
                 <div className='h-[350px] shadow-lg ring-1 ring-white/5  gap-2 p-4 flex-col rounded-[30px] bg-[#1E1F24] max-[767px]:justify-between max-[767px]:w-[100%] flex items-center justify-center     w-[30%]'>
                     <div className='  flex flex-col gap-2 items-center'>
-                        <img src={currentUser.profilePicture} className='  border-[2px] w-[8rem] rounded-full aspect-square object-cover' alt="" />
+                        <img src={user.profilePicture} className='  border-[2px] w-[8rem] rounded-full aspect-square object-cover' alt="" />
                         <div className='text-white flex flex-col'>
-                            <span className='max-[767px]:text-[150%] text-3xl underline'>{currentUser.username}</span>
-                            <div className='flex justify-evenly'><span className='max-[767px]:text-[100%] text-xl'>{currentUser.firstName}</span>
-                                <span className='text-xl max-[767px]:text-[100%] '>{currentUser.lastName}</span></div>
+                            <span className='max-[767px]:text-[150%] text-3xl underline'>{user.username}</span>
+                            <div className='flex justify-evenly'><span className='max-[767px]:text-[100%] text-xl'>{user.firstName}</span>
+                                <span className='text-xl max-[767px]:text-[100%] '>{user.lastName}</span></div>
 
                         </div>
                     </div>
                     <div className='max-[767px]:w-[100%] max-[767px]:min-h-fit bg-white/50 w-[90%]  p-2 rounded-md'>
-                        {`" ${currentUser.description}. "`}
+                        {`" ${user.description}. "`}
                     </div>
                     <Link to={"/editprofile"}>
                         <button className=' max-[767px]:text-[80%] bg-black hover:opacity-80
@@ -57,13 +55,9 @@ function Profile() {
 
 
                     <div className='max-[767px]:justify-center projectsCardProfile p-2 flex gap-2 w-[100%] h-[350px] overflow-x-auto'>
-                        {/* <div className="flex  w-[20%] flex-row items-center justify-center">
-                            <button className="animate-border inline-block rounded-md bg-white bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 bg-[length:400%_400%] p-1">
-                                <span className="block rounded-md bg-slate-900 px-5 py-3 font-bold text-white"> Twitter</span>
-                            </button>
-                        </div> */}
+                        
                         {
-                            (projects.length>0) ? (projects).map((project) => {
+                            (user.projects.length>0) ? (user.projects).map((project) => {
                                 return (<div className='
                                 shadow-lg ring-1 ring-black/5  flex justify-center gap-2 flex-col items-center min-w-[300px] h-[300px] rounded-md bg-[#141619] ' key={project.id}>
                                     <img src={project.projectPicture} alt="Project Picture" className='w-[250px] h-[200px] object-cover border border-dashed border-black rounded-md' />
@@ -78,7 +72,7 @@ function Profile() {
                                     
                                     
                                 </div>)
-                            }) : <div className='text-white font-lexend flex justify-center items-center w-[100%] h-[100%]'>Your Projects would have been displayed here if you hand any!</div>
+                            }) : <div className='text-white font-lexend flex justify-center items-center w-[100%] h-[100%]'>Their Projects would have been displayed here if they hand any!</div>
                         }
                     </div>
                 </div>
@@ -86,7 +80,7 @@ function Profile() {
 
             <div className='shadow-lg ring-1 ring-white/5 p-4 w-[100%] rounded-[30px] bg-[#1E1F24]'>
                 <div className=' max-[767px]:justify-center max-[767px]:w-[100%] w-[50%] flex flex-wrap gap-2'>
-                    {(currentUser.tags).map((tag) => {
+                    {(user.tags).map((tag) => {
                         let tagCol = tag.split(" ").join("").split("-").join("").split("/").join("")
                         return <span style={{ backgroundColor: `#${tagColors[tagCol]}` }} className={` w-fit h-fit p-2 rounded-2xl text-white`} key={tag}>{tag}</span>
                     })}
@@ -94,7 +88,7 @@ function Profile() {
             </div>
             <div className='shadow-lg ring-1 ring-white/5 p-4 w-[100%] rounded-[30px] bg-[#1E1F24]'>
                 <div className=' max-[767px]:justify-center max-[767px]:w-[100%] w-[100%] flex flex-wrap gap-2'>
-                    {(currentUser.techStack).map((tech) => {
+                    {(user.techStack).map((tech) => {
                         let tagCol = tech.split(" ").join("")
                         return <span style={{ backgroundColor: `#${techColors[tagCol]}` }} className={` w-fit h-fit p-2 rounded-2xl text-white`} key={tech}>{tech}</span>
                     })}
@@ -102,7 +96,5 @@ function Profile() {
             </div>
 
         </div>
-    )
+  )
 }
-
-export default Profile

@@ -16,15 +16,16 @@ mongoose.connect(process.env.MONGO).then(()=>{
 })
 
 const __dirname=path.resolve();
-const app=express()
+const app = express()
+app.use(express.json())
+app.use(cookieParser())
+app.use(cors({origin:true,credentials:true}))
 app.use(express.static(path.join(__dirname,"/client/dist")))
 app.get("*",(req,res)=>{
     res.sendFile(path.join(__dirname,"client","dist","index.html"))
 });
 
-app.use(express.json())
-app.use(cookieParser())
-app.use(cors({origin:true,credentials:true}))
+
 app.listen(3000,()=>{
     console.log("Server on 3000")
 })

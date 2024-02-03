@@ -120,3 +120,20 @@ export const getProject = async (req, res, next) => {
     next(error)
   }
 }
+export const getUser = async (req, res, next) => {
+  
+  try {
+    const user = await User.find({username:req.params.id})
+    res.status(201).json(user)
+  } catch (error) {
+    next(error)
+  }
+}
+export const getUsers = async (req, res, next) => {
+  try {
+    const user = await User.find({})
+    res.status(201).json(user)
+  } catch (error) {
+    next(error)
+  }
+}

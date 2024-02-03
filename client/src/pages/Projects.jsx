@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { app } from '../firebase';
 import { FaGithub, FaLink } from "react-icons/fa6";
-
+import Cookies from 'js-cookie';
 const Projects = () => {
   const { currentUser, loading, error } = useSelector((state) => state.user);
   const descRef = useRef();
@@ -15,8 +15,9 @@ const Projects = () => {
   const [imagePercentage, setImagePercentage] = useState(0)
 
 
+
   const [formData, setFormData] = useState({ techStack: [], email: currentUser.email });
-  const techs = ["ReactJS", "ExpressJS", "NodeJS", "MongoDB", "Python", "Javascript", "TailwindCSS"]
+  const techs = ["ReactJS", "ExpressJS", "NodeJS", "MongoDB", "Python", "Javascript", "TailwindCSS","Flutter","HTML","CSS","C","Cpp","MySQL","Firebase","Java"]
 
   const handleFileUpload = async () => {
     const storage = getStorage(app);
@@ -47,10 +48,10 @@ const Projects = () => {
   const techStackAdder = (e) => {
     if (!(formData.techStack).includes(e.target.value)) {
       (formData.techStack).push(e.target.value)
-      e.target.className = "rounded-md border px-2 border-dashed border-black bg-green-400";
+      e.target.className = "rounded-md border p-2 hover:scale-105 duration-200 bg-green-400  border-[#818181]";
     } else {
       (formData.techStack).splice((formData.techStack).indexOf(e.target.value), 1)
-      e.target.className = "rounded-md border px-2 border-dashed border-black bg-white";
+      e.target.className = "rounded-md border p-2 hover:scale-105 duration-200 hover:bg-none   border-[#818181]";
     }
 
   }
@@ -61,8 +62,8 @@ const Projects = () => {
 
 
 
-      // const res = await fetch(`http://localhost:3000/api/user/addProject/${currentUser._id}`, {
-        const res = await fetch(`https://flexfordev.onrender.com/api/user/addProject/${currentUser._id}`, {
+      const res = await fetch(`http://localhost:3000/api/user/addProject/${currentUser._id}`, {
+        // const res = await fetch(`https://flexfordev.onrender.com/api/user/addProject/${currentUser._id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -89,9 +90,15 @@ const Projects = () => {
     }
   }
   useEffect(() => {
+    
+    function getCookie(key) {
+      var b = document.cookie.match("(^|;)\\s*" + key + "\\s*=\\s*([^;]+)");
+      return b ? b.pop() : "";
+    }
+    console.log(getCookie("access_token"))
     const gettingProjects = async () => {
-      // const result = await fetch(`http://localhost:3000/api/user/getProject/${currentUser._id}`, {
-        const result=await fetch(`https://flexfordev.onrender.com/api/user/getProject/${currentUser._id}`, {
+      const result = await fetch(`http://localhost:3000/api/user/getProject/${currentUser._id}`, {
+        // const result=await fetch(`https://flexfordev.onrender.com/api/user/getProject/${currentUser._id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -111,30 +118,31 @@ const Projects = () => {
 
   return (
     <div className='dashboardParent min-h-screen
-         w-[100%] p-5 flex flex-col gap-2 bg-[#F9F9FC]'>
+         w-[100%] p-5 flex flex-col gap-2 projectsPage'>
 
-      <div className={`${show ? "" : "hidden"} bg-white dashboardChild  w-[400px] rounded-[10px]
+      <div className={`${show ? "" : "hidden"} addProjectCard dashboardChild  w-[500px] max-[767px]:w-[90%] rounded-[10px]
           border border-black
            border-dashed overflow-hidden`}>
-        <form name='projectForm' onSubmit={handleSubmit} className={` dashboardChildChild   h-[400px] flex flex-col items-center rounded-[10px] p-4 gap-2 overflow-y-scroll`}>
-          Add Project
-          <div className='w-[100%]'>
+        <form  name='projectForm' onSubmit={handleSubmit} className={`text-white dashboardChildChild   h-[400px] flex flex-col items-center rounded-[10px] p-4 gap-2 overflow-y-scroll`}>
+          <span className='font-lexend'>Add Project</span>
+          <div className='w-[100%] swift relative'>
             <input
               type='text'
               placeholder='Project Name'
               id='projectName'
               className='
                     w-[100%]
-                        border border-black border-dashed bg-white placeholder:text-black p-3 rounded-lg'
+                        addProjectCardInput p-3 '
               onChange={handleChange}
             />
+            <span className='input-border'></span>
           </div>
-          <div className='w-[100%]  flex items-center justify-center'>
+          <div className='w-[100%]   flex items-center justify-center'>
             <input type='file' ref={fileRef} hidden accept='image/*' onChange={(e) => setImage(e.target.files[0])} />
             <img
               src={formData.projectPicture || "https://firebasestorage.googleapis.com/v0/b/flex-f7f8b.appspot.com/o/1706808363567upload-1118929_640.webp?alt=media&token=e3cb7a8e-8dca-404a-a3bf-ac12db7be1d9"}
               alt='profile'
-              className='border border-black border-dashed rounded-2xl p-2 aspect-square w-[60%] self-center cursor-pointer  object-cover mt-2'
+              className=' p-2 aspect-square w-[60%] self-center cursor-pointer  object-cover mt-2'
               onClick={() => fileRef.current.click()}
             />
             {/* <p className='text-sm self-center'>
@@ -149,38 +157,40 @@ const Projects = () => {
             )}
           </p> */}
           </div>
-          <div className='w-[100%]'>
+          <div className='w-[100%] swift relative'>
             <input
               type='url'
               placeholder='Deploy link'
               id='deployLink'
               className='
-                        w-[100%] border border-black border-dashed bg-white placeholder:text-black p-3 rounded-lg'
+                        w-[100%] addProjectCardInput p-3 '
               onChange={handleChange}
             />
+            <span className='input-border'></span>
           </div>
-          <div className='w-[100%]'><input
+          <div className='w-[100%] swift relative'><input
             type='url'
             placeholder='Github Link'
             id='githubLink'
             className='
                     w-[100%]
-                    border border-black border-dashed bg-white placeholder:text-black p-3 rounded-lg'
+                    addProjectCardInput p-3'
             onChange={handleChange}
-          /></div>
+          /><span className='input-border'></span></div>
 
 
-          <div className='w-[100%]'>
-            <textarea id="description" onChange={handleChange} ref={descRef} type='text' className=' w-[100%] h-[4em] resize-none text-wrap border border-black border-dashed bg-white placeholder:text-black p-2 rounded-lg' maxLength={100} placeholder='Describe project in 100 characters.' />
+          <div className='w-[100%] swift relative'>
+            <textarea id="description" onChange={handleChange} ref={descRef} type='text' className=' w-[100%] h-[4em] resize-none text-wrap addProjectCardInput p-2' maxLength={500} placeholder='Describe project in 100 characters.' />
+            <span className='input-border'></span>
           </div>
           <div className='w-[100%] flex flex-col items-center'>
             <span>
               Choose Tech Stack
             </span>
-            <div className='w-[100%] justify-center items-center flex flex-wrap gap-1'>
+            <div className='w-[100%] justify-center items-center flex flex-wrap gap-2'>
               {techs.map((tech) => {
                 return (
-                  <button key={tech} value={tech} onClick={(e) => { techStackAdder(e) }} type='button' className={`rounded-md border px-2 border-dashed border-black`}>
+                  <button key={tech} value={tech} onClick={(e) => { techStackAdder(e) }} type='button' className={`rounded-md border p-2 hover:scale-105 duration-200  border-[#818181]`}>
                     {tech}
                   </button>
                 )
@@ -198,8 +208,8 @@ const Projects = () => {
         {
           (projects.length > 0) ? (
             (projects).map((project) => {
-              return (<div className='shadow-lg ring-1 ring-black/5 bg-white flex justify-center gap-2 flex-col items-center w-[400px] h-[300px] rounded-xl ' key={project.id}>
-                <div className='w-[70%] flex justify-between items-center font-lexend text-[120%]'><div>{project.projectName}</div><div className=' font-mukta flex  gap-2'>
+              return (<div className='projectCard flex justify-center gap-2 flex-col items-center w-[400px] h-[300px] rounded-xl ' key={project.id}>
+                <div className='w-[70%] flex justify-between items-center font-lexend text-[120%]'><div className='text-white'>{project.projectName}</div><div className=' font-mukta flex  gap-2'>
                   {project.deployLink ? <a target='blank' href={project.deployLink} className='shadow-lg ring-1 ring-black/5 text-white bg-blue-400 text-[20px] hover:bg-blue-500 rounded-full p-2'><FaLink /></a> : ""}
                   {project.githubLink ? <a target='blank' href={project.githubLink} className='shadow-lg ring-1 ring-black/5 text-white bg-orange-500 text-[20px] hover:bg-orange-600 rounded-full p-2 '><FaGithub />
   </a> : ""}

@@ -8,19 +8,16 @@ import Signin from "./pages/signIn"
 import Dashboard from './pages/Dashboard';
 import React, { useState } from 'react';
 
-
 import {PrivateRoute, PrivateRouteOnboarding, PrivateRouteSign} from "./components/PrivateRoute"
 import Onboarding from "./pages/Onboarding"
 import Profile from "./pages/Profile"
 import Projects from "./pages/Projects"
+import { PublicProfile } from "./pages/PublicProfile"
 export default function App() {
   const [currentpage, setCurrentpage] = useState("Home")
   const pull_data = (data) => {
     setCurrentpage(data)// LOGS DATA FROM CHILD (My name is Dean Winchester... &)
-    console.log(data);
   }
-  let x = document.cookie
-  console.log(x);
   return (
     <BrowserRouter>
     <div className="flex flex-col h-screen overflow-hidden">
@@ -35,6 +32,7 @@ export default function App() {
       <Route path="/" element={<Home/>}/>
       <Route path="/profile" element={<Profile/>}/>
       <Route path="/projects" element={<Projects/>}/>
+      <Route path="/user/:id?" element={<PublicProfile/>}/>
       </Route>
       <Route path="/onboarding" element={<Onboarding/>}/>
       <Route path="/editprofile" element={<EditProfile/>}/>

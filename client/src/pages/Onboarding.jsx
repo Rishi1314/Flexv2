@@ -11,7 +11,7 @@ export default function Onboarding() {
   const [verror, setVerror] = useState("")
   const tagRef = useRef()
   const descRef = useRef()
-  const techs=["ReactJS","ExpressJS","NodeJS","MongoDB","Python","Javascript","TailwindCSS"]
+  const techs=["ReactJS","ExpressJS","NodeJS","MongoDB","Python","Javascript","TailwindCSS","Flutter","HTML","CSS","C","Cpp","MySQL","Firebase","Java"]
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleChange = (e) => {
@@ -100,6 +100,7 @@ export default function Onboarding() {
             <option value="" disabled selected hidden>{tag}</option>
             <option value="AI Aficionado
 " onClick={() => { settag("AI Aficionado") }}>AI Aficionado</option>
+            
             <option value="Full-Stack Magician" onClick={() => { settag("Full-Stack Magician") }}>Full-Stack Magician</option>
             <option value="React Rockstar" onClick={() => { settag("React Rockstar") }}>React Rockstar</option>
             <option value="Python Pro" onClick={() => { settag("Python Pro") }}>Python Pro</option>
