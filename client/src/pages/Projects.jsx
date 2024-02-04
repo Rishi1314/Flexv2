@@ -1,10 +1,10 @@
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { app } from '../firebase';
 import { FaGithub, FaLink } from "react-icons/fa6";
 const Projects = () => {
-  const { currentUser, loading, error } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user);
   const descRef = useRef();
   const fileRef = useRef();
   const [image, setImage] = useState();
@@ -139,9 +139,9 @@ const Projects = () => {
           <div className='w-[100%]   flex items-center justify-center'>
             <input type='file' ref={fileRef} hidden accept='image/*' onChange={(e) => setImage(e.target.files[0])} />
             <img
-              src={formData.projectPicture || "https://firebasestorage.googleapis.com/v0/b/flex-f7f8b.appspot.com/o/1706808363567upload-1118929_640.webp?alt=media&token=e3cb7a8e-8dca-404a-a3bf-ac12db7be1d9"}
+              src={formData.projectPicture || "https://firebasestorage.googleapis.com/v0/b/flex-f7f8b.appspot.com/o/1707055923964icons8-upload-image-96.png?alt=media&token=e2f8d920-3065-4dc5-94a5-3142111bc072"}
               alt='profile'
-              className=' p-2 aspect-square w-[60%] self-center cursor-pointer  object-cover mt-2'
+              className=' p-2 aspect-square w-[20%] self-center cursor-pointer  object-cover mt-2'
               onClick={() => fileRef.current.click()}
             />
             {/* <p className='text-sm self-center'>

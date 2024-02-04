@@ -84,14 +84,16 @@ export default function SignIn() {
 
 
 
-          <button disabled={loading} className="button w-[50%] font-lexend">
+          <button disabled={loading} className="button w-fit font-mukta">
             <span>
               {loading ? 'Loading...' : 'Sign In'}
 
             </span>
           </button>
           <div className='bg-[#bbb] w-[70%] h-[1px]'></div>
+          <div>
           <OAuth />
+          </div>
         </form>
         <div className='w-[100%] justify-center flex gap-2 mt-5'>
           <p>Dont Have an account?</p>

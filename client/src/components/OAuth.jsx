@@ -27,17 +27,7 @@ export default function OAuth() {
                     photo:result.user.photoURL
             }),
             customConfig)
-            // const res=await fetch('/api/auth/google',{
-            //     method:'POST',
-            //     headers:{
-            //         'Content-Type':'application/json',
-            //     },
-            //     body:JSON.stringify({
-            //         name:result.user.displayName,
-            //         email:result.user.email,
-            //         photo:result.user.photoURL
-            //     })
-            // })
+            
             const data=res.data;
             dispatch(signInSuccess(data))
             navigate("/")
@@ -45,8 +35,13 @@ export default function OAuth() {
             console.log("Couldnt log in with Google",error);
         }
     }
-  return (
-    <button type='button' onClick={handleGoogleClick}
-     className='bg-red-700 text-white rounded-lg p-3 uppercase hover:opacity-95'>Continue with Google</button>
+    return (
+        <button onClick={handleGoogleClick}  className="button2 w-fit font-mukta">
+        <span>
+          Continue with Google
+
+        </span>
+      </button>
+
   )
 }

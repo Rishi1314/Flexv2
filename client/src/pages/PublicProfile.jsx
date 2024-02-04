@@ -24,6 +24,7 @@ export const PublicProfile = () => {
         const loader = async () => {
             let res=await axios.post(`/api/user/getUser/${id}`,JSON.stringify({}),customConfig)
             setUser(res.data[0]);
+          
             
           }
           loader();
