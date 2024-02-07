@@ -13,6 +13,9 @@ import Onboarding from "./pages/Onboarding"
 import Profile from "./pages/Profile"
 import Projects from "./pages/Projects"
 import { PublicProfile } from "./pages/PublicProfile"
+import Resources from "./pages/Resources"
+import Notes from "./pages/Notes"
+import Tasks from "./pages/Tasks"
 export default function App() {
   const [currentpage, setCurrentpage] = useState("Home")
   const pull_data = (data) => {
@@ -32,6 +35,9 @@ export default function App() {
       <Route path="/" element={<Home/>}/>
       <Route path="/profile" element={<Profile/>}/>
       <Route path="/projects" element={<Projects/>}/>
+      <Route path="/resources" element={<Resources/>}/>
+      <Route path="/resources/notes" element={<Notes/>}/>
+      <Route path="/resources/tasks" element={<Tasks/>}/>
       </Route>
       <Route path="/onboarding" element={<Onboarding/>}/>
       <Route path="/editprofile" element={<EditProfile/>}/>

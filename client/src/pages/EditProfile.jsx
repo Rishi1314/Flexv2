@@ -62,7 +62,6 @@ export default function EditProfile() {
     e.preventDefault();
     try {
       dispatch(updateUserStart());
-      // const res = await fetch(`https://flexfordev.onrender.com/api/user/update/${currentUser._id}`, {
       const res = await fetch(`/api/user/update/${currentUser._id}`, {
         method: 'POST',
         headers: {
@@ -72,7 +71,6 @@ export default function EditProfile() {
         credentials: "include"
         // withCredentials:true
       });
-      // let res=await axios.post(`http://localhost:3000/api/user/update/${currentUser._id}`,JSON.stringify(formData),customConfig)
 
       const data = await res.json();
       if (data.success === false) {

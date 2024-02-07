@@ -1,10 +1,12 @@
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { useEffect, useRef, useState } from 'react'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { app } from '../firebase';
 import { FaGithub, FaLink } from "react-icons/fa6";
+import { updateUserFailure, updateUserStart, updateUserSuccess } from '../redux/user/userSlice';
 const Projects = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const dispatch=useDispatch()
   const descRef = useRef();
   const fileRef = useRef();
   const [image, setImage] = useState();
@@ -12,6 +14,7 @@ const Projects = () => {
   const [show, setShow] = useState(false);
   const [imageError, setImageError] = useState(false)
   const [imagePercentage, setImagePercentage] = useState(0)
+  const [updateSuccess, setUpdateSuccess] = useState(false);
 
 
 
@@ -19,6 +22,7 @@ const Projects = () => {
   const techs = ["ReactJS", "ExpressJS", "NodeJS", "MongoDB", "Python", "Javascript", "TailwindCSS", "Flutter", "HTML", "CSS", "C", "Cpp", "MySQL", "Firebase", "Java"]
 
   const handleFileUpload = async () => {
+    setImageError(false)
     const storage = getStorage(app);
     const fileName = new Date().getTime() + image.name;
     const storageRef = ref(storage, fileName)
@@ -32,6 +36,7 @@ const Projects = () => {
 
       (error) => {
         setImageError(true)
+        console.log(error);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
@@ -54,38 +59,71 @@ const Projects = () => {
     }
 
   }
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+
+
+
+
+  //     const res = await fetch(`/api/user/addProject/${currentUser._id}`, {
+  //       // const res = await fetch(`https://flexfordev.onrender.com/api/user/addProject/${currentUser._id}`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(formData),
+  //       credentials: "include"
+  //     });
+
+
+
+
+
+  //     const data = await res.json()
+
+  //     setProjects([...projects, data])
+  //     setShow(!show)
+  //     setImage(" ")
+  //     setFormData({ techStack: [], email: currentUser.email })
+  //     var frm = document.getElementsByName('projectForm')[0];
+  //     frm.reset()
+
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+    
+  // }
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-
-
-
-
+      dispatch(updateUserStart());
       const res = await fetch(`/api/user/addProject/${currentUser._id}`, {
-        // const res = await fetch(`https://flexfordev.onrender.com/api/user/addProject/${currentUser._id}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-        credentials: "include"
-      });
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(formData),
+              credentials: "include"
+            });
 
-
-
-
-
-      const data = await res.json()
-
-      setProjects([...projects, data])
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(updateUserFailure(data));
+        return;
+      }
+      
+          setProjects(data.projects)
       setShow(!show)
       setImage(" ")
       setFormData({ techStack: [], email: currentUser.email })
       var frm = document.getElementsByName('projectForm')[0];
       frm.reset()
-
+      dispatch(updateUserSuccess(data));
+      setUpdateSuccess(true);
+      
     } catch (error) {
-      console.log(error);
+      dispatch(updateUserFailure(error));
     }
   }
   useEffect(() => {
@@ -95,21 +133,21 @@ const Projects = () => {
       return b ? b.pop() : "";
     }
     console.log(getCookie("access_token"))
-    const gettingProjects = async () => {
-      const result = await fetch(`/api/user/getProject/${currentUser._id}`, {
-        // const result=await fetch(`https://flexfordev.onrender.com/api/user/getProject/${currentUser._id}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-        credentials: "include"
-      });
-      const data = await result.json()
-      setProjects(data)
+    // const gettingProjects = async () => {
+    //   const result = await fetch(`/api/user/getProject/${currentUser._id}`, {
+    //     // const result=await fetch(`https://flexfordev.onrender.com/api/user/getProject/${currentUser._id}`, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify(formData),
+    //     credentials: "include"
+    //   });
+    //   const data = await result.json()
+    //   setProjects(data)
 
-    }
-    gettingProjects()
+    // }
+    // gettingProjects()
     if (image) {
       handleFileUpload(image);
     }
@@ -144,7 +182,7 @@ const Projects = () => {
               className=' p-2 aspect-square w-[20%] self-center cursor-pointer  object-cover mt-2'
               onClick={() => fileRef.current.click()}
             />
-            {/* <p className='text-sm self-center'>
+            <p className='text-sm self-center'>
             {imageError ? (
               <span className='text-red-700'>Error uploading image (file size must be less than 2 MB)</span>
             ) : imagePercentage > 0 && imagePercentage < 100 ? (
@@ -154,7 +192,7 @@ const Projects = () => {
             ) : (
               ''
             )}
-          </p> */}
+          </p>
           </div>
           <div className='w-[100%] swift relative'>
             <input

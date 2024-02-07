@@ -2,6 +2,7 @@ import { errorHandler } from "../utils/erros.js";
 import bcryptjs from "bcryptjs";
 import User from "../models/userModel.js";
 import Project from "../models/projectModel.js";
+import Task from "../models/taskModel.js";
 export const updateUser = async (req, res, next) => {
   if (req.user.id !== req.params.id) {
     return next(errorHandler(401, "You can update only your account!"));
@@ -119,8 +120,47 @@ export const addProject = async (req, res, next) => {
       },
       { new: true }
     );
+      const user=await User.findById(req.params.id)
+    res.status(201).json(user);
+  } catch (error) {
+    next(error);
+  }
+};
+export const addTask = async (req, res, next) => {
+  if (req.user.id !== req.params.id) {
+    return next(
+      errorHandler(401, "You can add only projects to your account!")
+    );
+  }
+  try {
+    const {
+      taskName,
+      deadline,
+      description,
+      
+      email,
+    } = req.body;
+    const date = new Date();
+    const task = new Task({
+      taskName,
+      deadline,
+      description,
+      
+      email,
+      date: date.toISOString().split("T")[0],
+    });
+    await task.save();
+    await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        $push: {
+          tasks: task,
+        },
+      },
+      { new: true }
+    );
 
-    res.status(201).json(project);
+    res.status(201).json(task);
   } catch (error) {
     next(error);
   }
@@ -133,6 +173,47 @@ export const getProject = async (req, res, next) => {
   try {
     const user = await User.find({ _id: req.params.id });
     res.status(201).json(user[0].projects);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateProject = async (req, res, next) => {
+  if (req.user.id !== req.params.id) {
+    return next(errorHandler(401, "You can update only your account!"));
+  }
+  try {
+    
+    const updatedProject = await Project.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: {
+          
+        projectName: req.body.projectName,
+        description:req.body.description,
+        githubLink:req.body.githubLink,
+        deployLink:req.body.deployLink,
+        projectPicture:req.body.projectPicture,
+        techStack:req.body.techStack,
+        },
+      },
+      { new: true }
+    );
+
+    const {...rest } = updatedProject._doc;
+    res.status(200).json(rest);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+export const getTask = async (req, res, next) => {
+  if (req.user.id !== req.params.id) {
+    return next(errorHandler(401, "You can only view your projects!"));
+  }
+  try {
+    const user = await User.find({ _id: req.params.id });
+    res.status(201).json(user[0].tasks);
   } catch (error) {
     next(error);
   }
