@@ -4,9 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { app } from '../firebase';
 import { FaGithub, FaLink } from "react-icons/fa6";
 import { updateUserFailure, updateUserStart, updateUserSuccess } from '../redux/user/userSlice';
+import { BsFillPencilFill } from "react-icons/bs";
+import { useNavigate } from 'react-router-dom';
+
 const Projects = () => {
   const { currentUser } = useSelector((state) => state.user);
-  const dispatch=useDispatch()
+  const dispatch = useDispatch()
+  const navigate=useNavigate()
   const descRef = useRef();
   const fileRef = useRef();
   const [image, setImage] = useState();
@@ -92,28 +96,28 @@ const Projects = () => {
   //   } catch (error) {
   //     console.log(error);
   //   }
-    
+
   // }
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       dispatch(updateUserStart());
       const res = await fetch(`/api/user/addProject/${currentUser._id}`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(formData),
-              credentials: "include"
-            });
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+        credentials: "include"
+      });
 
       const data = await res.json();
       if (data.success === false) {
         dispatch(updateUserFailure(data));
         return;
       }
-      
-          setProjects(data.projects)
+
+      setProjects(data.projects)
       setShow(!show)
       setImage(" ")
       setFormData({ techStack: [], email: currentUser.email })
@@ -121,10 +125,13 @@ const Projects = () => {
       frm.reset()
       dispatch(updateUserSuccess(data));
       setUpdateSuccess(true);
-      
+
     } catch (error) {
       dispatch(updateUserFailure(error));
     }
+  }
+  const redirectToEditProjects = async (e) => {
+    navigate(`/projects/editProject/${e._id}?`)
   }
   useEffect(() => {
 
@@ -183,16 +190,16 @@ const Projects = () => {
               onClick={() => fileRef.current.click()}
             />
             <p className='text-sm self-center'>
-            {imageError ? (
-              <span className='text-red-700'>Error uploading image (file size must be less than 2 MB)</span>
-            ) : imagePercentage > 0 && imagePercentage < 100 ? (
-              <span className='text-slate-700'>{`Uploading: ${imagePercentage} %`}</span>
-            ) : imagePercentage === 100 ? (
-              <span className='text-green-700'>Image uploaded successfully</span>
-            ) : (
-              ''
-            )}
-          </p>
+              {imageError ? (
+                <span className='text-red-700'>Error uploading image (file size must be less than 2 MB)</span>
+              ) : imagePercentage > 0 && imagePercentage < 100 ? (
+                <span className='text-slate-700'>{`Uploading: ${imagePercentage} %`}</span>
+              ) : imagePercentage === 100 ? (
+                <span className='text-green-700'>Image uploaded successfully</span>
+              ) : (
+                ''
+              )}
+            </p>
           </div>
           <div className='w-[100%] swift relative'>
             <input
@@ -236,32 +243,33 @@ const Projects = () => {
           </div>
           <div className='w-[100%] flex justify-center items-center'>
             <button type='submit' className="group group-hover:before:duration-500 group-hover:after:duration-500 after:duration-500 hover:border-rose-300 hover:before:[box-shadow:_20px_20px_20px_30px_#a21caf] duration-500 before:duration-500 hover:duration-500 underline underline-offset-2 hover:after:-right-8 hover:before:right-12 hover:before:-bottom-8 hover:before:blur hover:underline hover:underline-offset-4  origin-left hover:decoration-2 hover:text-rose-300 relative bg-neutral-800 h-16 w-64 border text-left p-3 text-gray-50 text-base font-bold rounded-lg  overflow-hidden  before:absolute before:w-12 before:h-12 before:content[''] before:right-1 before:top-1 before:z-10 before:bg-violet-500 before:rounded-full before:blur-lg  after:absolute after:z-10 after:w-20 after:h-20 after:content['']  after:bg-rose-300 after:right-8 after:top-3 after:rounded-full after:blur-lg">
-  Create Project
-</button>
+              Create Project
+            </button>
 
 
           </div>
         </form>
       </div>
       <div className='w-[100%]'>
-        
-      <button onClick={() => { setShow(!show) }} className="shadow-lg ring-1 ring-black/5 group group-hover:before:duration-500 group-hover:after:duration-500 after:duration-500 hover:border-rose-300 hover:before:[box-shadow:_20px_20px_20px_30px_#a21caf] duration-500 before:duration-500 hover:duration-500 underline underline-offset-2 hover:after:-right-8 hover:before:right-12 hover:before:-bottom-8 hover:before:blur hover:underline hover:underline-offset-4  origin-left hover:decoration-2 hover:text-rose-300 relative bg-neutral-800 h-16 w-64 border text-left p-3 text-gray-50 text-base font-bold rounded-lg  overflow-hidden  before:absolute before:w-12 before:h-12 before:content[''] before:right-1 before:top-1 before:z-10 before:bg-violet-500 before:rounded-full before:blur-lg  after:absolute after:z-10 after:w-20 after:h-20 after:content['']  after:bg-rose-300 after:right-8 after:top-3 after:rounded-full after:blur-lg">
-  Add Project
-</button>
+
+        <button onClick={() => { setShow(!show) }} className="shadow-lg ring-1 ring-black/5 group group-hover:before:duration-500 group-hover:after:duration-500 after:duration-500 hover:border-rose-300 hover:before:[box-shadow:_20px_20px_20px_30px_#a21caf] duration-500 before:duration-500 hover:duration-500 underline underline-offset-2 hover:after:-right-8 hover:before:right-12 hover:before:-bottom-8 hover:before:blur hover:underline hover:underline-offset-4  origin-left hover:decoration-2 hover:text-rose-300 relative bg-neutral-800 h-16 w-64 border text-left p-3 text-gray-50 text-base font-bold rounded-lg  overflow-hidden  before:absolute before:w-12 before:h-12 before:content[''] before:right-1 before:top-1 before:z-10 before:bg-violet-500 before:rounded-full before:blur-lg  after:absolute after:z-10 after:w-20 after:h-20 after:content['']  after:bg-rose-300 after:right-8 after:top-3 after:rounded-full after:blur-lg">
+          Add Project
+        </button>
 
 
-      
+
       </div>
       <div className='dashboardChildChild w-[100%] h-[80vh] gap-2 flex flex-wrap justify-center  overflow-y-auto p-6'>
         {
           (projects.length > 0) ? (
             (projects).map((project) => {
               return (<div className='projectCard flex justify-center gap-2 flex-col items-center w-[400px] h-[300px] rounded-xl ' key={project.id}>
-                <div className='w-[70%] flex justify-between items-center font-lexend text-[120%]'><div className='text-white'>{project.projectName}</div><div className=' font-mukta flex  gap-2'>
-                  {project.deployLink ? <a target='blank' href={project.deployLink} className='shadow-lg ring-1 ring-black/5 text-white bg-blue-400 text-[20px] hover:bg-blue-500 rounded-full p-2'><FaLink /></a> : ""}
-                  {project.githubLink ? <a target='blank' href={project.githubLink} className='shadow-lg ring-1 ring-black/5 text-white bg-orange-500 text-[20px] hover:bg-orange-600 rounded-full p-2 '><FaGithub />
-                  </a> : ""}
-                </div></div>
+                <div className='w-[70%] flex justify-between items-center font-lexend text-[120%]'><div onClick={()=>{redirectToEditProjects(project)}} className='text-white cursor-pointer hover:underline duration-200 flex items-center'>{project.projectName} <div className='m-1 text-white  rounded-full text-sm'>                            <BsFillPencilFill />
+                </div></div><div className=' font-mukta flex  gap-2'>
+                    {project.deployLink ? <a target='blank' href={project.deployLink} className='shadow-lg ring-1 ring-black/5 text-white bg-blue-400 text-[20px] hover:bg-blue-500 rounded-full p-2'><FaLink /></a> : ""}
+                    {project.githubLink ? <a target='blank' href={project.githubLink} className='shadow-lg ring-1 ring-black/5 text-white bg-orange-500 text-[20px] hover:bg-orange-600 rounded-full p-2 '><FaGithub />
+                    </a> : ""}
+                  </div></div>
                 <img src={project.projectPicture} alt="Project Picture" className='w-[300px] h-[200px] object-cover border border-black rounded-md' />
 
 

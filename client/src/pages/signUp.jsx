@@ -59,21 +59,21 @@ export default function Signup() {
          shadow-lg ring-1 ring-black/5 w-[25%] max-[767px]:w-[90%]'>
         <h1 className='text-3xl text-center font-semibold my-7'>Create a new account</h1>
         <form onSubmit={handleSubmit} className='flex items-center flex-col gap-4'>
-          <div className='w-[70%] swift relative'><input
+          <div className='w-[70%] max-[767px]:w-[100%] swift relative'><input
             type='text'
             placeholder='Enter Username'
             id='username'
             className='w-[100%]
           addProjectCardInput p-3'          onChange={handleChange}
           /><span className='input-border'></span></div>
-          <div className='w-[70%] swift relative'><input
+          <div className='w-[70%] max-[767px]:w-[100%] swift relative'><input
             type='email'
             placeholder='Enter Email'
             id='email'
             className='w-[100%]
           addProjectCardInput p-3'          onChange={handleChange}
           /><span className='input-border'></span></div>
-          <div className='w-[70%] swift relative'><input
+          <div className='w-[70%] max-[767px]:w-[100%] swift relative'><input
             type='password'
             placeholder='Enter Password'
             id='password'
@@ -84,16 +84,19 @@ export default function Signup() {
 
 
 
-          <button disabled={loading} className="button w-[50%] font-lexend">
-            <span>
+          <button disabled={loading} className="button  max-[767px]:w-[100%] text-[100%] w-[50%] font-lexend">
+            <span className='py-4 '>
               {loading ? "Loading" : 'Sign Up'}
 
             </span>
           </button>
           <div className='bg-[#bbb] w-[70%] h-[1px]'></div>
+          <div className='flex justify-center w-[100%] max:[767px]:w-[70%]'>
           <OAuth />
+          </div>
+
         </form>
-        <div className='justify-center flex gap-2 mt-5'>
+        <div className='justify-center max-[767px]:flex-col max-[767px]:items-center flex gap-2 mt-5'>
           <p>Have an account?</p>
           <Link to='/sign-in' className='hover:scale-105 duration-200' >
             <span className='  text-black px-2 rounded-lg font-mukta bg-white'>Sign in</span>

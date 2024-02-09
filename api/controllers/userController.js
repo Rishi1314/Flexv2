@@ -166,13 +166,25 @@ export const addTask = async (req, res, next) => {
   }
 };
 
-export const getProject = async (req, res, next) => {
+export const getUserProjects = async (req, res, next) => {
   if (req.user.id !== req.params.id) {
     return next(errorHandler(401, "You can only view your projects!"));
   }
   try {
     const user = await User.find({ _id: req.params.id });
     res.status(201).json(user[0].projects);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getProject= async (req, res, next) => {
+  if (req.user.id !== req.params.userId) {
+    return next(errorHandler(401, "You can only view your projects!"));
+  }
+  try {
+    const project = await Project.find({ _id: req.params.id });
+    res.status(201).json(project);
   } catch (error) {
     next(error);
   }

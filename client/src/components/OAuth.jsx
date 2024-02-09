@@ -36,8 +36,8 @@ export default function OAuth() {
         }
     }
     return (
-        <button onClick={handleGoogleClick}  className="button2 w-fit font-mukta">
-        <span>
+        <button onClick={handleGoogleClick}  className="button2 max-[767px]:w-[100%] text-[100%] w-[50%] font-mukta">
+        <span className=" py-4">
           Continue with Google
 
         </span>

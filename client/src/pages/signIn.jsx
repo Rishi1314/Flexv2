@@ -52,12 +52,12 @@ export default function SignIn() {
     }
   };
   return (
-    <div loading="lazy" className="flex justify-center items-center min-h-screen w-[100%] bg-[#141619]">
+    <div loading="lazy" className="flex  justify-center items-center min-h-screen w-[100%] bg-[#141619]">
       <div className='p-3 text-white addProjectCard dashboardChild   rounded-[10px]
          shadow-lg ring-1 ring-black/5 w-[25%] max-[767px]:w-[90%]'>
         <h1 className='text-3xl text-center font-semibold my-7'>Log In</h1>
         <form onSubmit={handleSubmit} className='flex items-center flex-col gap-4'>
-          <div className='w-[70%] swift relative'>
+          <div className='w-[70%] max-[767px]:w-[100%] swift relative'>
             <input
               type='email'
               placeholder='Email'
@@ -68,7 +68,7 @@ export default function SignIn() {
             />
             <span className='input-border'></span>
           </div>
-          <div className='w-[70%] swift relative'>
+          <div className='w-[70%] max-[767px]:w-[100%] swift relative'>
             <input
               type='password'
               placeholder='Password'
@@ -84,20 +84,20 @@ export default function SignIn() {
 
 
 
-          <button disabled={loading} className="button w-fit font-mukta">
-            <span>
+          <button disabled={loading} className="button max-[767px]:w-[100%] text-[100%] w-[50%] font-mukta">
+            <span className='py-4 '>
               {loading ? 'Loading...' : 'Sign In'}
 
             </span>
           </button>
           <div className='bg-[#bbb] w-[70%] h-[1px]'></div>
-          <div>
+          <div className='flex justify-center w-[100%] max:[767px]:w-[70%]'>
           <OAuth />
           </div>
         </form>
-        <div className='w-[100%] justify-center flex gap-2 mt-5'>
+        <div className='w-[100%] justify-center max-[767px]:flex-col max-[767px]:items-center flex gap-2 mt-5'>
           <p>Dont Have an account?</p>
-          <Link to='/sign-up' className='hover:scale-105 duration-200' >
+          <Link to='/sign-up' className='hover:scale-105  duration-200' >
             <span className='  text-black px-2 rounded-lg font-mukta bg-white'>Sign up</span>
           </Link>
         </div>
