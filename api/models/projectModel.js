@@ -33,6 +33,13 @@ const projectSchema = new mongoose.Schema({
         required:true,
         default:[]
     },
+    userId: {
+         
+        type: String,
+        required:true,
+            
+        
+    }
 }, { timestamps: true })
 
 const Project = mongoose.model("Project", projectSchema);

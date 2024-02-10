@@ -82,6 +82,30 @@ export const deleteUser = async (req, res, next) => {
     next(error);
   }
 };
+export const deleteProject = async (req, res, next) => {
+  if (req.user.id !== req.params.userId) {
+    return next(errorHandler(401, "You can delete only your account!"));
+  }
+  try {
+    await Project.findByIdAndDelete(req.params.id);
+    const updatedProjects =await Project.find({userId:req.p.id}) 
+    
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      {
+        $set: {
+          
+          projects:updatedProjects
+        },
+      },
+      { new: true }
+    );
+    
+    res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const addProject = async (req, res, next) => {
   if (req.user.id !== req.params.id) {
@@ -108,6 +132,7 @@ export const addProject = async (req, res, next) => {
       deployLink,
       email,
       projectPicture,
+      userId:req.user.id,
       date: date.toISOString().split("T")[0],
     });
     await project.save();
@@ -123,6 +148,7 @@ export const addProject = async (req, res, next) => {
       const user=await User.findById(req.params.id)
     res.status(201).json(user);
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
@@ -191,12 +217,12 @@ export const getProject= async (req, res, next) => {
 };
 
 export const updateProject = async (req, res, next) => {
-  if (req.user.id !== req.params.id) {
+  if (req.user.id !== req.body.userId) {
     return next(errorHandler(401, "You can update only your account!"));
   }
   try {
     
-    const updatedProject = await Project.findByIdAndUpdate(
+    await Project.findByIdAndUpdate(
       req.params.id,
       {
         $set: {
@@ -206,14 +232,26 @@ export const updateProject = async (req, res, next) => {
         githubLink:req.body.githubLink,
         deployLink:req.body.deployLink,
         projectPicture:req.body.projectPicture,
-        techStack:req.body.techStack,
+          techStack: req.body.techStack,
         },
       },
       { new: true }
     );
-
-    const {...rest } = updatedProject._doc;
-    res.status(200).json(rest);
+    
+    const updatedProjects =await Project.find({userId:req.user.id}) 
+    
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      {
+        $set: {
+          
+          projects:updatedProjects
+        },
+      },
+      { new: true }
+    );
+    
+    res.status(200).json(user);
   } catch (error) {
     console.log(error);
     next(error);

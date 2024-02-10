@@ -119,10 +119,11 @@ const Projects = () => {
 
       setProjects(data.projects)
       setShow(!show)
-      setImage(" ")
       setFormData({ techStack: [], email: currentUser.email })
       var frm = document.getElementsByName('projectForm')[0];
       frm.reset()
+      setImage(" ")
+      
       dispatch(updateUserSuccess(data));
       setUpdateSuccess(true);
 
