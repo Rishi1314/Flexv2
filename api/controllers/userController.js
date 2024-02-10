@@ -88,7 +88,7 @@ export const deleteProject = async (req, res, next) => {
   }
   try {
     await Project.findByIdAndDelete(req.params.id);
-    const updatedProjects =await Project.find({userId:req.p.id}) 
+    const updatedProjects =await Project.find({userId:req.params.userId}) 
     
     const user = await User.findByIdAndUpdate(
       req.user.id,
@@ -103,6 +103,7 @@ export const deleteProject = async (req, res, next) => {
     
     res.status(200).json(user);
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };

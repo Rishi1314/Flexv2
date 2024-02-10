@@ -7,9 +7,9 @@ import {
     updateUserStart,
     updateUserSuccess,
     updateUserFailure,
-    deleteUserStart,
-    deleteUserFailure,
-    deleteUserSuccess,
+    deleteProjectStart,
+    deleteProjectFailure,
+    deleteProjectSuccess,
 } from '../redux/user/userSlice';
 import axios from "axios"
 import { useNavigate, useParams } from 'react-router-dom';
@@ -26,7 +26,7 @@ export default function EditProject() {
     const { currentUser, loading, error } = useSelector((state) => state.user);
     const [formData, setFormData] = useState({userId:currentUser._id})
     const navigate=useNavigate()
-    const techColors = { ReactJS: "82CD47", ExpressJS: "3C3633", Nodejs: "527853", NodeJS: "527853", MongoDB: "3A4D39", Python: "FFE382", Javascript: "FFA33C", TailwindCSS: "40A2D8", Flutter: "36BAF6", HTML: 'E5532D', CSS: "2D53E5", C: '085D9F', Cpp: '085D9F', MySQL: "F29418", Firebase: "F5831E" }
+    const techColors = { ReactJS: "82CD47", ExpressJS: "3C3633", Nodejs: "527853", NodeJS: "527853", MongoDB: "3A4D39", Python: "FFE382",Java: "FFA33C", Javascript: "FFA33C", TailwindCSS: "40A2D8", Flutter: "36BAF6", HTML: 'E5532D', CSS: "2D53E5", C: '085D9F', Cpp: '085D9F', MySQL: "F29418", Firebase: "F5831E" }
     useEffect(() => {
         if (!projectData) {
             const project = (currentUser.projects).find(o => o._id === params.projectId);
@@ -98,21 +98,22 @@ export default function EditProject() {
         }
     }
 
-    const handleDeleteAccout = async () => {
+    const handleDeleteProject = async () => {
         try {
-            dispatch(deleteUserStart());
-            const res = await fetch(`/api/user/deleteProject/${projectData._id}`, {
+            dispatch(deleteProjectStart());
+            const res = await fetch(`/api/user/deleteProject/${projectData._id}/${currentUser._id}`, {
                 method: 'DELETE',
             });
             const data = await res.json();
             if (data.success === false) {
-                dispatch(deleteUserFailure(data));
+                dispatch(deleteProjectFailure(data));
                 return;
             }
-            dispatch(deleteUserSuccess(data));
+            dispatch(deleteProjectSuccess(data));
+            navigate("/projects")
         } catch (error) {
             console.log(error);
-            dispatch(deleteUserFailure(error));
+            dispatch(deleteProjectFailure(error));
         }
     }
 
@@ -129,7 +130,7 @@ export default function EditProject() {
                 <form onSubmit={handleSubmit} className='flex h-[90vh] overflow-y-auto max-[767px]:flex-col max-[767px]:gap-1 gap-4 justify-center p-2 items-center '>
                     <div className='flex min-[768px]:bg-[#24252a8c] rounded-2xl flex-col w-[48%] max-[767px]:items-center max-[767px]:w-[100%] gap-2 p-4
                     justify-center  items-center '>
-                        <div className='flex max-[767px]:flex-col gap-2 items-center'>
+                        <div className='flex flex-col gap-2 items-center'>
                             <input type='file' ref={fileRef} hidden accept='image/*' onChange={(e) => setImage(e.target.files[0])} />
                             <img
                                 src={formData.projectPicture || projectData.projectPicture}
@@ -163,16 +164,17 @@ export default function EditProject() {
                             <button
                                 disabled={Object.keys(formData).length===1}
                                 className='bg-[#292929] border-2 border-[#3e3e3e] rounded-lg text-white px-6 py-3 text-base hover:border-[#fff] cursor-pointer transition    p-3 uppercase hover:opacity-95 max-[767px]:w-[80%] disabled:hover:border-[#3e3e3e]  disabled:opacity-50 w-[50%] ' >{loading ? "Loading.." : "Update"}</button>
-                            <div className=' max-w-[50%] max-[767px]:max-w-[80%] w-fit flex bg-[#2f3035] p-3 rounded-xl gap-2 justify-center flex-wrap'>
+                            <div className={` max-w-[50%] max-[767px]:max-w-[80%] w-fit flex bg-[#2f3035] p-3 rounded-xl gap-2 justify-center flex-wrap`}>
                                 {
                                     (projectData.techStack).map((tech) => {
                                         let tagCol = tech.split(" ").join("")
                                         return <span style={{ backgroundColor: `#${techColors[tagCol]}` }} className={` w-fit h-fit p-2 rounded-2xl text-white`} key={tech}>{tech}</span>
                                     })
-                                    }
+                                
+                                }
                             </div>
                         <div className=" bg-[#ff5b5b] font-mukta rounded-lg border-white border-2 hover:bg-red-600 duration-200 max-[767px]:w-[80%] text-center cursor-pointer p-2">
-                            <span className='text-white' onClick={handleDeleteAccout}>Delete Project</span>
+                            <span className='text-white' onClick={handleDeleteProject}>Delete Project</span>
                         </div>
                         <p className={`bg-red-700 mt-1 text-white w-[80%] text-center p-2 rounded-md border-white border-2 font-lexend ${(!error)?"hidden":""}`}>{error && 'Something went wrong!'}</p>
                             <p className={`bg-green-700 mt-1 text-white w-[80%] text-center p-2 rounded-md border-white border-2 ${updateSuccess?"":"hidden"} font-lexend`}>

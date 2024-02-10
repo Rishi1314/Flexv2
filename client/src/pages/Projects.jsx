@@ -232,10 +232,12 @@ const Projects = () => {
             <span>
               Choose Tech Stack
             </span>
+            
             <div className='w-[100%] justify-center items-center flex flex-wrap gap-2'>
-              {techs.map((tech) => {
+              {techs.map((tech,index) => {
                 return (
-                  <button key={tech} value={tech} onClick={(e) => { techStackAdder(e) }} type='button' className={`rounded-md border p-2 hover:scale-105 duration-200  border-[#818181]`}>
+                  <button key={tech} value={tech}
+                    onClick={(e) => { techStackAdder(e) }} type='button' className={`rounded-md border p-2 hover:scale-105 duration-200  border-[#818181]`}>
                     {tech}
                   </button>
                 )
