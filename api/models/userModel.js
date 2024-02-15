@@ -44,6 +44,13 @@ const userSchema=new mongoose.Schema({
         }],
 
     },
+    todos: {
+        type: [{
+            type: mongoose.Schema.Types.Object,
+            ref: 'Todo'
+        }],
+
+    },
     projects: {
         type: [{
             type: mongoose.Schema.Types.Object,

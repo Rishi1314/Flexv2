@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiPlus, FiTrash } from "react-icons/fi";
 import { motion } from "framer-motion";
 import { FaFire } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUserFailure, updateUserStart, updateUserSuccess } from "../redux/user/userSlice";
 
 export const CustomKanban = () => {
+  
   return (
     <div className="h-screen w-full bg-neutral-900 text-neutral-50">
       <Board />
@@ -12,7 +15,25 @@ export const CustomKanban = () => {
 };
 
 const Board = () => {
-  const [cards, setCards] = useState([]);
+  const { currentUser } = useSelector((state) => state.user);
+  const [cards, setCards] = useState(currentUser.todos);
+  useEffect(() => {
+    
+    const temp =  async () => {
+      const res = await fetch(`/api/user/getTodos/${currentUser._id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      const data = await res.json();
+      
+      setCards(data);
+    }
+    temp()
+  },[])
+  
 
   return (
     <div className="flex h-full w-full gap-3 max-[767px]:items-center max-[767px]:flex-col p-12">
@@ -50,15 +71,17 @@ const Board = () => {
 };
 
 const Column = ({ title, headingColor, cards, column, setCards }) => {
+  const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.user);
   const [active, setActive] = useState(false);
-
+  // console.log(cards);
   const handleDragStart = (e, card) => {
-    e.dataTransfer.setData("cardId", card.id);
+    e.dataTransfer.setData("cardId", card._id);
   };
 
-  const handleDragEnd = (e) => {
+  const handleDragEnd = async(e) => {
     const cardId = e.dataTransfer.getData("cardId");
-
+    
     setActive(false);
     clearHighlights();
 
@@ -70,24 +93,43 @@ const Column = ({ title, headingColor, cards, column, setCards }) => {
     if (before !== cardId) {
       let copy = [...cards];
 
-      let cardToTransfer = copy.find((c) => c.id === cardId);
+      let cardToTransfer = copy.find((c) => c._id === cardId);
       if (!cardToTransfer) return;
       cardToTransfer = { ...cardToTransfer, column };
 
-      copy = copy.filter((c) => c.id !== cardId);
+      copy = copy.filter((c) => c._id !== cardId);
 
       const moveToBack = before === "-1";
 
       if (moveToBack) {
         copy.push(cardToTransfer);
       } else {
-        const insertAtIndex = copy.findIndex((el) => el.id === before);
+        const insertAtIndex = copy.findIndex((el) => el._id === before);
         if (insertAtIndex === undefined) return;
 
         copy.splice(insertAtIndex, 0, cardToTransfer);
       }
 
-      setCards(copy);
+
+      dispatch(updateUserStart());
+        const res = await fetch(`/api/user/updateTodos/${currentUser._id}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(copy),
+          credentials: "include",
+        });
+        const data = await res.json();
+      if (data.success === false) {
+        dispatch(updateUserFailure(data));
+        return;
+      }
+        
+      dispatch(updateUserSuccess(data));
+      setCards(currentUser.todos);
+      console.log(data.todos)
+      
     }
   };
 
@@ -168,7 +210,7 @@ const Column = ({ title, headingColor, cards, column, setCards }) => {
         }`}
       >
         {filteredCards.map((c) => {
-          return <Card key={c.id} {...c} handleDragStart={handleDragStart} />;
+          return <Card key={c._id} {...c} handleDragStart={handleDragStart} />;
         })}
         <DropIndicator beforeId={null} column={column} />
         <AddCard column={column} setCards={setCards} />
@@ -177,15 +219,15 @@ const Column = ({ title, headingColor, cards, column, setCards }) => {
   );
 };
 
-const Card = ({ title, id, column, handleDragStart }) => {
+const Card = ({ title, _id, column, handleDragStart }) => {
   return (
     <>
-      <DropIndicator beforeId={id} column={column} />
+      <DropIndicator beforeId={_id} column={column} />
       <motion.div
         layout
-        layoutId={id}
+        layoutId={_id}
         draggable="true"
-        onDragStart={(e) => handleDragStart(e, { title, id, column })}
+        onDragStart={(e) => handleDragStart(e, { title, _id, column })}
         className="cursor-grab rounded border border-neutral-700 bg-neutral-800 p-3 active:cursor-grabbing"
       >
         <p className="text-sm text-neutral-100">{title}</p>
@@ -219,7 +261,7 @@ const BurnBarrel = ({ setCards }) => {
   const handleDragEnd = (e) => {
     const cardId = e.dataTransfer.getData("cardId");
 
-    setCards((pv) => pv.filter((c) => c.id !== cardId));
+    setCards((pv) => pv.filter((c) => c._id !== cardId));
 
     setActive(false);
   };
@@ -252,7 +294,7 @@ const AddCard = ({ column, setCards }) => {
     const newCard = {
       column,
       title: text.trim(),
-      id: Math.random().toString(),
+      _id: Math.random().toString(),
     };
 
     setCards((pv) => [...pv, newCard]);
@@ -302,30 +344,30 @@ const AddCard = ({ column, setCards }) => {
 
 const DEFAULT_CARDS = [
   // BACKLOG
-  { title: "Look into render bug in dashboard", id: "1", column: "backlog" },
-  { title: "SOX compliance checklist", id: "2", column: "backlog" },
-  { title: "[SPIKE] Migrate to Azure", id: "3", column: "backlog" },
-  { title: "Document Notifications service", id: "4", column: "backlog" },
+  { title: "Look into render bug in dashboard", _id: "1a", column: "backlog" },
+  { title: "SOX compliance checklist", _id: "2", column: "backlog" },
+  { title: "[SPIKE] Migrate to Azure", _id: "3", column: "backlog" },
+  { title: "Document Notifications service", _id: "11", column: "backlog" },
   // TODO
   {
     title: "Research DB options for new microservice",
-    id: "5",
+    _id: "5",
     column: "todo",
   },
-  { title: "Postmortem for outage", id: "6", column: "todo" },
-  { title: "Sync with product on Q3 roadmap", id: "7", column: "todo" },
+  { title: "Postmortem for outage", _id: "6", column: "todo" },
+  { title: "Sync with product on Q3 roadmap", _id: "7", column: "todo" },
 
   // DOING
   {
-    title: "Refactor context providers to use Zustand",
-    id: "8",
+    title: "Refactor context prov_iders to use Zustand",
+    _id: "8",
     column: "doing",
   },
-  { title: "Add logging to daily CRON", id: "9", column: "doing" },
+  { title: "Add logging to daily CRON", _id: "9", column: "doing" },
   // DONE
   {
     title: "Set up DD dashboards for Lambda listener",
-    id: "10",
+    _id: "10",
     column: "done",
   },
 ];
