@@ -117,7 +117,7 @@ const Column = ({ title, headingColor, cards, column, setCards }) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(copy),
+          body: JSON.stringify({ todos:copy }),
           credentials: "include",
         });
         const data = await res.json();
@@ -127,8 +127,8 @@ const Column = ({ title, headingColor, cards, column, setCards }) => {
       }
         
       dispatch(updateUserSuccess(data));
-      setCards(currentUser.todos);
-      console.log(data.todos)
+      setCards(copy);
+      
       
     }
   };
