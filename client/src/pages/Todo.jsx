@@ -8,7 +8,7 @@ import { updateUserFailure, updateUserStart, updateUserSuccess } from "../redux/
 export const CustomKanban = () => {
   
   return (
-    <div className="h-screen w-full bg-neutral-900 text-neutral-50">
+    <div className="h-screen  w-full todosPage  text-neutral-50">
       <Board />
     </div>
   );
@@ -36,7 +36,8 @@ const Board = () => {
   
 
   return (
-    <div className="flex h-full w-full gap-3 max-[767px]:items-center max-[767px]:flex-col p-12">
+    <div className="flex h-full justify-center py-10 max-[767px]:h-[93vh] max-[767px]:flex-col-reverse  overflow-y-auto  w-full gap-3 ">
+      <div className="flex gap-3 max-[767px]:items-center max-[767px]:flex-col">
       <Column
         title="Backlog"
         column="backlog"
@@ -61,11 +62,14 @@ const Board = () => {
       <Column
         title="Complete"
         column="done"
-        headingColor="text-emerald-200"
+        headingColor="text-green-300"
         cards={cards}
         setCards={setCards}
       />
+      </div>
+      <div className="flex max-[767px]:justify-center items-start">
       <BurnBarrel setCards={setCards} />
+      </div>
     </div>
   );
 };
@@ -203,8 +207,11 @@ const Column = ({ title, headingColor, cards, column, setCards }) => {
       </div>
       <div
         onDrop={handleDragEnd}
+        onTouchEnd={handleDragEnd}
         onDragOver={handleDragOver}
+        onTouchMove={handleDragOver}
         onDragLeave={handleDragLeave}
+        onTouchCancel={handleDragLeave}
         className={`h-full w-full transition-colors ${
           active ? "bg-neutral-800/50" : "bg-neutral-800/0"
         }`}
@@ -227,6 +234,7 @@ const Card = ({ title, _id, column, handleDragStart }) => {
         layout
         layoutId={_id}
         draggable="true"
+        onTouchStart={(e) => handleDragStart(e, { title, _id, column })}
         onDragStart={(e) => handleDragStart(e, { title, _id, column })}
         className="cursor-grab rounded border border-neutral-700 bg-neutral-800 p-3 active:cursor-grabbing"
       >
@@ -247,6 +255,7 @@ const DropIndicator = ({ beforeId, column }) => {
 };
 
 const BurnBarrel = ({ setCards }) => {
+  const { currentUser } = useSelector((state) => state.user);
   const [active, setActive] = useState(false);
 
   const handleDragOver = (e) => {
@@ -258,10 +267,18 @@ const BurnBarrel = ({ setCards }) => {
     setActive(false);
   };
 
-  const handleDragEnd = (e) => {
+  const handleDragEnd = async(e) => {
     const cardId = e.dataTransfer.getData("cardId");
-
-    setCards((pv) => pv.filter((c) => c._id !== cardId));
+    const res = await fetch(`/api/user/deleteTodo/${cardId}/${currentUser._id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    const newCards = await res.json();
+    console.log(newCards);
+    setCards(newCards);
 
     setActive(false);
   };
@@ -269,9 +286,12 @@ const BurnBarrel = ({ setCards }) => {
   return (
     <div
       onDrop={handleDragEnd}
+      onTouchEnd={handleDragEnd}
       onDragOver={handleDragOver}
+      onTouchMove={handleDragOver}
       onDragLeave={handleDragLeave}
-      className={`mt-10 grid h-56 w-56 shrink-0 place-content-center rounded border text-3xl ${
+      onTouchCancel={handleDragLeave}
+      className={` grid h-56 max-[767px]:h-36 w-56 shrink-0 place-content-center rounded border text-3xl ${
         active
           ? "border-red-800 bg-red-800/20 text-red-500"
           : "border-neutral-500 bg-neutral-500/20 text-neutral-500"
@@ -283,19 +303,27 @@ const BurnBarrel = ({ setCards }) => {
 };
 
 const AddCard = ({ column, setCards }) => {
+  const { currentUser } = useSelector((state) => state.user);
   const [text, setText] = useState("");
   const [adding, setAdding] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!text.trim().length) return;
 
-    const newCard = {
-      column,
-      title: text.trim(),
-      _id: Math.random().toString(),
-    };
+
+
+    const res = await fetch(`/api/user/addTodo/${currentUser._id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({ column,title:text,email:currentUser.email }),
+    });
+    const newCard = await res.json();
+    
 
     setCards((pv) => [...pv, newCard]);
 

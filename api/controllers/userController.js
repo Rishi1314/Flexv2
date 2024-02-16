@@ -319,11 +319,11 @@ export const getUsers = async (req, res, next) => {
 };
 
 export const addTodo = async (req, res, next) => {
-  // if (req.user.id !== req.params.id) {
-  //   return next(
-  //     errorHandler(401, "You can add only projects to your account!")
-  //   );
-  // }
+  if (req.user.id !== req.params.id) {
+    return next(
+      errorHandler(401, "You can add only projects to your account!")
+    );
+  }
   try {
     const {
       title,  
@@ -334,7 +334,8 @@ export const addTodo = async (req, res, next) => {
       title,
       column,
       email,
-      date: date.toISOString().split("T")[0],
+      date: date.toISOString().split("T")[0], userId: req.params.id
+      
     });
     await todo.save();
     await User.findByIdAndUpdate(
@@ -398,6 +399,32 @@ export const updateTodos = async (req, res, next) => {
     );
     
     res.status(200).json(user);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+export const deleteTodo = async (req, res, next) => {
+  if (req.user.id !== req.params.userId) {
+    return next(errorHandler(401, "You can delete only your account!"));
+  }
+  try {
+    await Todo.findByIdAndDelete(req.params.id);
+    const updatedTodos =await Todo.find({userId:req.params.userId}) 
+    
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      {
+        $set: {
+          
+          todos:updatedTodos
+        },
+      },
+      { new: true }
+    );
+    
+    res.status(200).json(user.todos);
   } catch (error) {
     console.log(error);
     next(error);
