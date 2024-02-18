@@ -36,8 +36,8 @@ const Board = () => {
   
 
   return (
-    <div className="flex h-full justify-center py-10 max-[767px]:h-[93vh] max-[767px]:flex-col-reverse  overflow-y-auto  w-full gap-3 ">
-      <div className="flex gap-3 max-[767px]:items-center max-[767px]:flex-col">
+    <div className="  flex h-full justify-center py-10 max-[767px]:h-[93vh] max-[767px]:flex-col-reverse  overflow-y-auto  w-full gap-3 ">
+      <div className="  flex gap-3 max-[767px]:items-center max-[767px]:flex-col">
       <Column
         title="Backlog"
         column="backlog"
@@ -69,6 +69,10 @@ const Board = () => {
       </div>
       <div className="flex max-[767px]:justify-center items-start">
       <BurnBarrel setCards={setCards} />
+      </div>
+      <div className="w-[60%] self-center min-[768px]:hidden">
+        Drag and Drop events are not working on Mobile Screens.
+        Soon to be developed.
       </div>
     </div>
   );
@@ -198,7 +202,7 @@ const Column = ({ title, headingColor, cards, column, setCards }) => {
   const filteredCards = cards.filter((c) => c.column === column);
 
   return (
-    <div className="w-56 shrink-0">
+    <div className="max-[767px]:hidden w-56 shrink-0">
       <div className="mb-3 flex items-center justify-between">
         <h3 className={`font-medium ${headingColor}`}>{title}</h3>
         <span className="rounded text-sm text-neutral-400">
@@ -207,11 +211,11 @@ const Column = ({ title, headingColor, cards, column, setCards }) => {
       </div>
       <div
         onDrop={handleDragEnd}
-        onTouchEnd={handleDragEnd}
+        // onTouchEnd={handleDragEnd}
         onDragOver={handleDragOver}
-        onTouchMove={handleDragOver}
+        // onTouchMove={handleDragOver}
         onDragLeave={handleDragLeave}
-        onTouchCancel={handleDragLeave}
+        // onTouchCancel={handleDragLeave}
         className={`h-full w-full transition-colors ${
           active ? "bg-neutral-800/50" : "bg-neutral-800/0"
         }`}
@@ -234,7 +238,7 @@ const Card = ({ title, _id, column, handleDragStart }) => {
         layout
         layoutId={_id}
         draggable="true"
-        onTouchStart={(e) => handleDragStart(e, { title, _id, column })}
+        // onTouchStart={(e) => handleDragStart(e, { title, _id, column })}
         onDragStart={(e) => handleDragStart(e, { title, _id, column })}
         className="cursor-grab rounded border border-neutral-700 bg-neutral-800 p-3 active:cursor-grabbing"
       >
@@ -286,12 +290,12 @@ const BurnBarrel = ({ setCards }) => {
   return (
     <div
       onDrop={handleDragEnd}
-      onTouchEnd={handleDragEnd}
+      // onTouchEnd={handleDragEnd}
       onDragOver={handleDragOver}
-      onTouchMove={handleDragOver}
+      // onTouchMove={handleDragOver}
       onDragLeave={handleDragLeave}
-      onTouchCancel={handleDragLeave}
-      className={` grid h-56 max-[767px]:h-36 w-56 shrink-0 place-content-center rounded border text-3xl ${
+      // onTouchCancel={handleDragLeave}
+      className={`max-[767px]:mt-2 max-[767px]:hidden grid h-56 max-[767px]:h-36 w-56 shrink-0 place-content-center rounded border text-3xl ${
         active
           ? "border-red-800 bg-red-800/20 text-red-500"
           : "border-neutral-500 bg-neutral-500/20 text-neutral-500"
@@ -370,32 +374,3 @@ const AddCard = ({ column, setCards }) => {
   );
 };
 
-const DEFAULT_CARDS = [
-  // BACKLOG
-  { title: "Look into render bug in dashboard", _id: "1a", column: "backlog" },
-  { title: "SOX compliance checklist", _id: "2", column: "backlog" },
-  { title: "[SPIKE] Migrate to Azure", _id: "3", column: "backlog" },
-  { title: "Document Notifications service", _id: "11", column: "backlog" },
-  // TODO
-  {
-    title: "Research DB options for new microservice",
-    _id: "5",
-    column: "todo",
-  },
-  { title: "Postmortem for outage", _id: "6", column: "todo" },
-  { title: "Sync with product on Q3 roadmap", _id: "7", column: "todo" },
-
-  // DOING
-  {
-    title: "Refactor context prov_iders to use Zustand",
-    _id: "8",
-    column: "doing",
-  },
-  { title: "Add logging to daily CRON", _id: "9", column: "doing" },
-  // DONE
-  {
-    title: "Set up DD dashboards for Lambda listener",
-    _id: "10",
-    column: "done",
-  },
-];
