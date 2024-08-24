@@ -7,7 +7,9 @@ import cookieParser from "cookie-parser";
 import path from "path"
 import cors from "cors"
 
-dotenv.config()
+dotenv.config({ path:'../.env' })
+
+
 
 mongoose.connect(process.env.MONGO).then(()=>{
     console.log("Conntected to MONGODB");

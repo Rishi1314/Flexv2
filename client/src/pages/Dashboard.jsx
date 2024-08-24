@@ -148,7 +148,7 @@ const Dashboard = (props) => {
               </span>
             </div>
           </Link>
-          <Link
+          {/* <Link
             onClick={() => {
               setfirst("small");
             }}
@@ -169,7 +169,7 @@ const Dashboard = (props) => {
                 Resources
               </span>
             </div>
-          </Link>
+          </Link> */}
           <Link
             onClick={() => {
               setfirst("small");

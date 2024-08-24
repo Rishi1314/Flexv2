@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 export default function Home() {
   const [users, setUsers] = useState(null);
+  const [feed, setFeed] = useState(null);
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
   const [inputValue, setInputValue] = useState("");
@@ -31,6 +32,20 @@ export default function Home() {
         customConfig
       );
       setUsers(res.data.user);
+      let stuff = await axios.post(
+        "/api/user/getAllProjects",
+        JSON.stringify({}), customConfig
+      
+      )
+      // console.log(stuff.data);
+      
+      stuff.data.sort(function(a,b){
+        // Turn your strings into dates, and then subtract them
+        // to get a value that is either negative, positive, or zero.
+        return new Date(a.date)- new Date(b.date);
+      });
+      setFeed(stuff.data);
+      
     };
 
     loader();
@@ -48,20 +63,62 @@ export default function Home() {
   };
   return (
     <div className="w-[100%] p-6 justify-center  flex flex-col bg-[#141619] h-[93vh]">
-      <div className="flex  flex-col items-center w-[100%]">
-        <div className="w-[50%] flex  flex-col items-center">
+      <div className="flex items-center w-[100%]  h-[93vh]">
+        <div className="w-[70%] bg-[#202326] flex items-center overflow-y-auto h-[93vh] searchResultsDiv flex-col">
+        <div className=" flex flex-col gap-2 items-center searchResultsDiv w-[90%]">
+              {feed
+              ? feed.map((post) => {
+                if (post.projectName) {
+                  return (
+                    <div
+                      key={post._id}
+                      // onClick={() => {
+                      //   send(post.username);
+                      // }}
+                      className="  px-2 w-[100%] h-[30vh] bg-[#141619] text-white flex  rounded-lg justify-between"
+                    >
+                      <div className="max-w-[70%]">
+                      <span className="text-2xl">
+                      {post.projectName}
+                        </span>
+                        <div className="text-xs">
+                          {post.description}
+                        </div>
+                      </div>
+                      
+                      
+                      {
+                        <img
+                          src={post.projectPicture}
+                          alt="profile"
+                          className="  rounded-xl w-[200px] aspect-square object-cover overflow-hidden m-1"
+                        />
+                      }
+                    </div>
+                  );
+                  }
+                    
+                  })
+                : ""}
+            </div>
+        </div>
+        <div className="w-[30%] bg-white   flex  flex-col h-[93vh] items-center">
+          <div className="w-[100%] flex  flex-col h-[93vh] items-center">
           <input
             onFocus={() => {
               showResults();
             }}
             value={inputValue}
             onChange={handleInputChange}
-            placeholder="Search..."
-            className="searchBar w-[60%] h-10 bg-[#292929] border-2 border-[#3e3e3e] rounded-t-lg text-white px-6 py-3 text-base hover:border-[#fff] cursor-pointer transition"
+            placeholder="Search Users"
+              className="searchBar w-[100%] h-10 bg-[#292929] border-2 border-[#3e3e3e] 
+              
+              rounded-t-xs 
+            text-white px-6 py-3 text-base hover:border-[#fff] cursor-pointer transition"
             type="text"
           />{" "}
           <div
-            className={`w-[60%] h-[200px] searchResults 
+            className={`w-[100%] h-[200px] searchResults 
             flex gap-2 bg-[#1E1F24] p-2 rounded-b-3xl  flex-col items-center`}
           >
             <div className="overflow-y-scroll flex flex-col gap-2 items-center searchResultsDiv w-[100%]">
@@ -88,6 +145,7 @@ export default function Home() {
                   })
                 : ""}
             </div>
+          </div>
           </div>
         </div>
       </div>

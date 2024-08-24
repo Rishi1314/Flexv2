@@ -217,6 +217,17 @@ export const getProject= async (req, res, next) => {
     next(error);
   }
 };
+export const getAllProjects= async (req, res, next) => {
+  // if (req.user.id !== req.params.userId) {
+  //   return next(errorHandler(401, "You can only view your projects!"));
+  // }
+  try {
+    const project = await Project.find({});
+    res.status(201).json(project);
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const updateProject = async (req, res, next) => {
   if (req.user.id !== req.body.userId) {

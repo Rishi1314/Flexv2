@@ -1,6 +1,6 @@
 import express from "express";
 import { verifyToken } from "../utils/verifyUser.js";
-import { test, updateUser,deleteUser, onboardUser, addProject,  getUsers, getUser, addTask, getTask, getUserProjects, updateProject, deleteProject, addTodo, getTodos, updateTodos, deleteTodo } from "../controllers/userController.js";
+import {getAllProjects, test, updateUser,deleteUser, onboardUser, addProject,  getUsers, getUser, addTask, getTask, getUserProjects, updateProject, deleteProject, addTodo, getTodos, updateTodos, deleteTodo } from "../controllers/userController.js";
 
 const router=express.Router();
 
@@ -18,6 +18,7 @@ router.post("/deleteTodo/:id/:userId",verifyToken,deleteTodo)
 // router.delete("/deleteTodo/:id/:userId",verifyToken,deleteTodo)
 
 router.post('/getProject/:id',verifyToken,getUserProjects);
+router.post('/getAllProjects',verifyToken,getAllProjects);
 router.post('/getTodos/:id',getTodos);
 router.post('/editProject/:id?userId=',verifyToken,getUserProjects);
 router.post('/getTask/:id',verifyToken,getTask);
