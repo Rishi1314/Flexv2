@@ -17,6 +17,7 @@ import Notes from "./pages/Notes"
 import Tasks from "./pages/Tasks"
 import {CustomKanban} from "./pages/Todo"
 import EditProject from "./pages/EditProject"
+import PublicProject from "./pages/PublicProject"
 export default function App() {
   const [currentpage, setCurrentpage] = useState("Home")
   const pull_data = (data) => {
@@ -36,6 +37,7 @@ export default function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/projects" element={<Projects />} />
+                <Route path="/project/:projectId?" element={<PublicProject />} />
                 <Route path="/resources" element={<Resources />} />
                 <Route path="/resources/notes" element={<Notes />} />
                 <Route path="/resources/tasks" element={<Tasks />} />

@@ -1,6 +1,6 @@
 import express from "express";
 import { verifyToken } from "../utils/verifyUser.js";
-import {getAllProjects, test, updateUser,deleteUser, onboardUser, addProject,  getUsers, getUser, addTask, getTask, getUserProjects, updateProject, deleteProject, addTodo, getTodos, updateTodos, deleteTodo } from "../controllers/userController.js";
+import {getAllProjects, test, updateUser,deleteUser, onboardUser, addProject,  getUsers, getUser, addTask, getTask, getUserProjects, updateProject, deleteProject, addTodo, getTodos, updateTodos, deleteTodo, getPublicProject } from "../controllers/userController.js";
 
 const router=express.Router();
 
@@ -23,6 +23,7 @@ router.post('/getTodos/:id',getTodos);
 router.post('/editProject/:id?userId=',verifyToken,getUserProjects);
 router.post('/getTask/:id',verifyToken,getTask);
 router.post('/getUser/:id',getUser);
+router.post('/getPublicProject/:id',getPublicProject);
 router.post('/getUsers/',verifyToken,getUsers);
 router.get('/', test);
 

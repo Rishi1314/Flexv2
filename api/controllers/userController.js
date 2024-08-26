@@ -289,6 +289,19 @@ export const getUser = async (req, res, next) => {
     next(error);
   }
 };
+export const getPublicProject = async (req, res, next) => {
+  console.log(req.params);
+  
+  try {
+    
+    const project = await Project.find({ _id: req.params.id });
+    console.log(project);
+    
+    res.status(201).json(project);
+  } catch (error) {
+    next(error);
+  }
+};
 export const getUsers = async (req, res, next) => {
   try {
     const filter = req.body.filter || "";
