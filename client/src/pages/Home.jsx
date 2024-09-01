@@ -137,7 +137,7 @@ export default function Home() {
                         onClick={() => {
                           send(user.username);
                         }}
-                        className="  px-2 w-[90%] bg-[#141619] text-white flex justify-between items-center rounded-lg"
+                        className=" hover:cursor-pointer hover:bg-[#1f2125] border-[#1f2125] border-2 hover:border-white  px-2 w-[90%] bg-[#141619] text-white flex justify-between items-center rounded-lg"
                       >
                         {user.username}
                         {

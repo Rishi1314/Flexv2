@@ -9,6 +9,10 @@ export const PublicProfile = () => {
 
   const [user, setUser] = useState(null);
   const { id } = useParams();
+  const sendProject = (e) => {
+    console.log(e);
+    navigate(`/project/${e._id}`);
+  };
   const techColors = {
     ReactJS: "82CD47",
     ExpressJS: "3C3633",
@@ -103,8 +107,12 @@ export const PublicProfile = () => {
                   return (
                     <div
                       className="
+                                  hover:cursor-pointer
                                 shadow-lg ring-1 ring-black/5  flex justify-center gap-2 flex-col items-center min-w-[300px] h-[300px] rounded-md bg-[#141619] "
                       key={project.id}
+                      onClick={() => {
+                        sendProject(project)
+                      }}
                     >
                       <img
                         src={project.projectPicture}

@@ -295,7 +295,7 @@ export const getPublicProject = async (req, res, next) => {
   try {
     
     const project = await Project.find({ _id: req.params.id });
-    console.log(project);
+    // console.log(project);
     
     res.status(201).json(project);
   } catch (error) {

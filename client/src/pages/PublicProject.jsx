@@ -180,23 +180,23 @@ export default function PublicProject() {
                     justify-center  items-center "
             >
               <div className="flex flex-col gap-2 items-center">
-                <input
+                {/* <input
                   type="file"
                   ref={fileRef}
                   hidden
                   accept="image/*"
                   onChange={(e) => setImage(e.target.files[0])}
-                />
+                /> */}
                 <img
                   src={formData.projectPicture || projectData.projectPicture}
                   alt="profile"
                   className=" w-[300px] h-[200px]
                                 max-[767px]:w-[150px] max-[767px]:h-[100px] 
-                                cursor-pointer rounded-md object-cover"
+                                 rounded-md object-cover"
                   onClick={() => fileRef.current.click()}
                 />
 
-                <p className="text-sm  ">
+                {/* <p className="text-sm  ">
                   {imageError ? (
                     <span className="text-red-700">
                       Error uploading image (file size must be less than 2 MB)
@@ -210,7 +210,7 @@ export default function PublicProject() {
                   ) : (
                     ""
                   )}
-                </p>
+                </p> */}
               </div>
               <div className="w-[100%] text-center text-white">
                 <div className="">
@@ -284,11 +284,11 @@ export default function PublicProject() {
                   className="bg-[#292929] border-2 border-[#3e3e3e] rounded-lg text-white px-6 py-3 text-base hover:border-[#fff] cursor-pointer transition w-[50%] max-[767px]:w-[100%]"
                   onChange={handleChange}
                             /> */}
-                            <span className="bg-[#292929] border-2 border-[#3e3e3e] rounded-lg text-white px-6 py-3 text-base hover:border-[#fff] cursor-pointer transition w-[50%] max-[767px]:w-[100%]"
+                            <span className="bg-[#292929] border-2 border-[#3e3e3e] rounded-lg text-white px-6 py-3 text-base hover:border-[#fff]  transition w-[50%] max-[767px]:w-[100%]"
                   >
                                 {projectData.deployLink?(projectData.deployLink):'Not Deployed.'}
                             </span>
-                            <span className="bg-[#292929] border-2 border-[#3e3e3e] rounded-lg text-white px-6 py-3 text-base hover:border-[#fff] cursor-pointer transition w-[50%] max-[767px]:w-[100%]"
+                            <span className="bg-[#292929] border-2 border-[#3e3e3e] rounded-lg text-white px-6 py-3 text-base hover:border-[#fff]  transition w-[50%] max-[767px]:w-[100%]"
                   >
                                 {projectData.githubLink?(projectData.githubLink):'No GitHub respositry.'}
                             </span>
@@ -309,7 +309,7 @@ export default function PublicProject() {
                   maxLength={500}
                   placeholder="Describe project in 100 characters."
                             /> */}
-                            <div className="  h-[5em] bg-[#292929] border-2 border-[#3e3e3e] rounded-lg text-white px-6 py-3 text-base hover:border-[#fff] cursor-pointer transition w-[50%] max-[767px]:w-[100%] resize-none text-wrap"
+                            <div className="  min-h-[5em] bg-[#292929] border-2 border-[#3e3e3e] rounded-lg text-white px-6 py-3 text-base hover:border-[#fff] transition w-[50%] max-[767px]:w-[100%] resize-none text-wrap"
                   >
 {projectData.description}
                             </div>
