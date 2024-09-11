@@ -109,7 +109,7 @@ export default function Home() {
               : ""}
           </div>
         </div>
-        <div className="w-[30%] bg-white   flex  flex-col h-[93vh] items-center">
+        <div className="w-[30%] bg-[#292929]  flex  flex-col h-[93vh] items-center">
           <div className="w-[100%] flex  flex-col h-[93vh] items-center">
             <input
               onFocus={() => {
@@ -125,7 +125,7 @@ export default function Home() {
               type="text"
             />{" "}
             <div
-              className={`w-[100%] h-[200px] searchResults 
+              className={`w-[100%] h-[93vh] searchResults 
             flex gap-2 bg-[#1E1F24] p-2 rounded-b-3xl  flex-col items-center`}
             >
               <div className="overflow-y-scroll flex flex-col gap-2 items-center searchResultsDiv w-[100%]">

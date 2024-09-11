@@ -50,50 +50,50 @@ export default function PublicProject() {
     MySQL: "F29418",
     Firebase: "F5831E",
   };
-  const { projectId} = useParams();
-    const customConfig = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-        credentials: "include",
-      };
-    useEffect(() => {
-        // let id="65bb8256cb5b7e7f0a78c31a"
-        // if (!projectData) {
-        //     const temp = async () => {
-        //         let res = await axios.post(
-        //             `/api/user/getPublicProject/${id}`,
-        //             JSON.stringify({}),
-        //             customConfig
-        //         );   
-        //         setprojectData(res.data[0])
-        //         // console.log(res.data[0]);
-                
-        //     }
-        //   temp()
-      const loader = async () => {
-        // console.log(post);
-        
-        try {
-              console.log(projectId);
-              
-              let res = await axios.post(
-                `/api/user/getPublicProject/${projectId}`,
-                      JSON.stringify({}),
-                customConfig
-              );
-              setprojectData(res.data[0]);
-              console.log(projectData);
-            } catch (err) {
-              console.log(err.response.data);
-              
-            }
-            
-            
-          };
-          loader();
-        
+  const { projectId } = useParams();
+  const customConfig = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    withCredentials: true,
+    credentials: "include",
+  };
+  useEffect(() => {
+    // let id="65bb8256cb5b7e7f0a78c31a"
+    // if (!projectData) {
+    //     const temp = async () => {
+    //         let res = await axios.post(
+    //             `/api/user/getPublicProject/${id}`,
+    //             JSON.stringify({}),
+    //             customConfig
+    //         );   
+    //         setprojectData(res.data[0])
+    //         // console.log(res.data[0]);
+
+    //     }
+    //   temp()
+    const loader = async () => {
+      // console.log(post);
+
+      try {
+        console.log(projectId);
+
+        let res = await axios.post(
+          `/api/user/getPublicProject/${projectId}`,
+          JSON.stringify({}),
+          customConfig
+        );
+        setprojectData(res.data[0]);
+        console.log(projectData);
+      } catch (err) {
+        console.log(err.response.data);
+
+      }
+
+
+    };
+    loader();
+
     //   setprojectData(project);
     //   console.log(project);
     // }
@@ -161,7 +161,7 @@ export default function PublicProject() {
     }
   };
 
-  
+
 
   if (projectData) {
     return (
@@ -240,25 +240,7 @@ export default function PublicProject() {
                   );
                 })}
               </div>
-              {/* <div className=" bg-[#ff5b5b] font-mukta rounded-lg border-white border-2 hover:bg-red-600 duration-200 max-[767px]:w-[80%] text-center cursor-pointer p-2">
-                <span className="text-white" onClick={handleDeleteProject}>
-                  Delete Project
-                </span>
-              </div> */}
-              {/* <p
-                className={`bg-red-700 mt-1 text-white w-[80%] text-center p-2 rounded-md border-white border-2 font-lexend ${
-                  !error ? "hidden" : ""
-                }`}
-              >
-                {error && "Something went wrong!"}
-              </p>
-              <p
-                className={`bg-green-700 mt-1 text-white w-[80%] text-center p-2 rounded-md border-white border-2 ${
-                  updateSuccess ? "" : "hidden"
-                } font-lexend`}
-              >
-                {updateSuccess && "Project is updated successfully!"}
-              </p> */}
+            
             </div>
             <div className="w-[48%] max-[767px]:w-[95%] flex items-center gap-2 flex-col">
               <div className="w-[100%] flex justify-center">
@@ -270,10 +252,10 @@ export default function PublicProject() {
                   className="bg-[#292929] border-2 border-[#3e3e3e] rounded-lg text-white px-6 py-3 text-base hover:border-[#fff] cursor-pointer transition w-[50%] max-[767px]:w-[100%]  "
                   onChange={handleChange}
                             /> */}
-                            <span className="bg-[#292929] border-2 border-[#3e3e3e] rounded-lg text-white px-6 py-3 text-base hover:border-[#fff] cursor-pointer transition w-[50%] max-[767px]:w-[100%]"
-                  >
-                                {projectData.projectName}
-                            </span>
+                <span className="bg-[#292929] border-2 border-[#3e3e3e] rounded-lg text-white px-6 py-3 text-base hover:border-[#fff] cursor-pointer transition w-[50%] max-[767px]:w-[100%]"
+                >
+                  {projectData.projectName}
+                </span>
               </div>
               <div className="w-[100%] flex gap-2 items-center flex-col">
                 {/* <input
@@ -284,14 +266,17 @@ export default function PublicProject() {
                   className="bg-[#292929] border-2 border-[#3e3e3e] rounded-lg text-white px-6 py-3 text-base hover:border-[#fff] cursor-pointer transition w-[50%] max-[767px]:w-[100%]"
                   onChange={handleChange}
                             /> */}
-                            <span className="bg-[#292929] border-2 border-[#3e3e3e] rounded-lg text-white px-6 py-3 text-base hover:border-[#fff]  transition w-[50%] max-[767px]:w-[100%]"
-                  >
-                                {projectData.deployLink?(projectData.deployLink):'Not Deployed.'}
-                            </span>
-                            <span className="bg-[#292929] border-2 border-[#3e3e3e] rounded-lg text-white px-6 py-3 text-base hover:border-[#fff]  transition w-[50%] max-[767px]:w-[100%]"
-                  >
-                                {projectData.githubLink?(projectData.githubLink):'No GitHub respositry.'}
-                            </span>
+                <span className="bg-[#292929] border-2 border-[#3e3e3e] rounded-lg text-white px-6 py-3 text-base hover:border-[#fff] truncate transition w-[50%] max-[767px]:w-[100%]"
+                >
+                  {
+
+                    projectData.deployLink ? <a href={(projectData.deployLink)} target='blank'>{`${(projectData.deployLink)}`}</a> : 'Not Deployed.'}
+                </span>
+                <span className="bg-[#292929] text-clip border-2 border-[#3e3e3e] rounded-lg text-white px-6 py-3 text-base hover:border-[#fff] truncate transition w-[50%] max-[767px]:w-[100%]"
+                >
+                  {projectData.githubLink ? <a href={(projectData.githubLink)} target='blank'>{`${(projectData.githubLink)}`}</a>
+                    : 'No GitHub respositry.'}
+                </span>
                 {/* <input
                   defaultValue={projectData.githubLink}
                   type="text"
@@ -309,10 +294,10 @@ export default function PublicProject() {
                   maxLength={500}
                   placeholder="Describe project in 100 characters."
                             /> */}
-                            <div className="  min-h-[5em] bg-[#292929] border-2 border-[#3e3e3e] rounded-lg text-white px-6 py-3 text-base hover:border-[#fff] transition w-[50%] max-[767px]:w-[100%] resize-none text-wrap"
-                  >
-{projectData.description}
-                            </div>
+                <div className="  min-h-[5em] bg-[#292929] border-2 border-[#3e3e3e] rounded-lg text-white px-6 py-3 text-base hover:border-[#fff] transition w-[50%] max-[767px]:w-[100%] resize-none text-wrap"
+                >
+                  {projectData.description}
+                </div>
               </div>
             </div>
           </form>
